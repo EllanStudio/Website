@@ -28,6 +28,7 @@
 
 	function pageKind(pathname) {
 		if (/\/gameplay\.html$/i.test(pathname)) return 'gameplay';
+		if (/\/plan\.html$/i.test(pathname)) return 'plan';
 		if (/\/(?:index\.html)?$/i.test(pathname)) return 'home';
 		return '';
 	}
@@ -245,7 +246,7 @@
 		document.body.style.overflow = '';
 	};
 	document.addEventListener('keydown', function (e) {
-		if (e.key === 'Escape' && !modal.hidden) window.closePopup();
+		if (e.key === 'Escape' && modal && !modal.hidden) window.closePopup();
 	});
 
 	/* ===== 扫码加群弹出层 ===== */

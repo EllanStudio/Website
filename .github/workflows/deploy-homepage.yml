@@ -88,3 +88,40 @@ jobs:
           printf 'Nginx response SHA-256: %s\n' "$served_checksum"
           ssh "${ssh_options[@]}" "$target" "find /www/wwwroot -type f -name index.html -exec sha256sum {} + | grep -F '$served_checksum' || true"
           test "$local_checksum" = "$served_checksum"
+
+          local_plan_checksum="$(sha256sum website/plan.html | awk '{print $1}')"
+          served_plan_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/plan.html' | sha256sum | awk '{print $1}')"
+          printf 'Local plan.html SHA-256: %s\n' "$local_plan_checksum"
+          printf 'Nginx plan.html SHA-256: %s\n' "$served_plan_checksum"
+          test "$local_plan_checksum" = "$served_plan_checksum"
+
+          curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/css/plan.css' > /dev/null
+          curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/js/plan.js' > /dev/null
+          plan_content_type="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" -o "$RUNNER_TEMP/plan-network.json" -w '%{content_type}' 'https://ellan.site/api/plan-network.php')"
+          case "$plan_content_type" in
+            application/json*) ;;
+            *) printf 'Unexpected PLAN API content type: %s\n' "$plan_content_type" >&2; exit 1 ;;
+          esac
+          jq -e '
+            def numeric_object($required):
+              (type == "object") and
+              ((keys | sort) == ($required | sort)) and
+              all(.[]; type == "number");
+            (.timestamp | type == "number") and
+            (.numbers | numeric_object([
+              "sessions", "regular_players", "session_length_avg", "best_peak_players",
+              "player_playtime", "current_uptime", "last_peak_players", "best_peak_date",
+              "total_players", "playtime", "last_peak_date", "online_players"
+            ])) and
+            (.players | numeric_object([
+              "new_players_1d", "unique_players_1d", "new_players_7d",
+              "unique_players_7d", "new_players_30d", "unique_players_30d"
+            ])) and
+            (.weeks | numeric_object([
+              "start", "midpoint", "end", "unique_before", "unique_after",
+              "new_before", "new_after", "regular_before", "regular_after",
+              "average_playtime_before", "average_playtime_after",
+              "session_length_average_before", "session_length_average_after",
+              "sessions_before", "sessions_after"
+            ]))
+          ' "$RUNNER_TEMP/plan-network.json" > /dev/null

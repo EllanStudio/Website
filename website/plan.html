@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>大陆数据 · Ellan 艾尔岚 Minecraft 服务器</title>
+	<meta name="language" content="zh-CN">
+	<meta name="author" content="Ellan">
+	<meta name="description" content="查看艾尔岚 Minecraft 服务器的实时在线人数、累计游玩时长、近期活跃与社区趋势。">
+	<meta name="keywords" content="Minecraft,艾尔岚,Ellan,MC服务器,服务器数据,PLAN">
+	<meta name="robots" content="All">
+	<link rel="canonical" href="https://ellan.site/plan.html">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="大陆数据 · Ellan 艾尔岚">
+	<meta property="og:description" content="用聚合数据看见艾尔岚大陆此刻与最近的活力。">
+	<meta property="og:url" content="https://ellan.site/plan.html">
+	<meta property="og:image" content="https://ellan.site/img/hero-world-hd.webp">
+	<meta name="twitter:card" content="summary_large_image">
+	<link rel="icon" href="img/icon.png">
+	<script>
+		try {
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches && sessionStorage.getItem('ellan:page-transition-target') === location.pathname) document.documentElement.classList.add('page-arriving');
+		} catch (e) { /* storage may be unavailable */ }
+	</script>
+	<link rel="stylesheet" href="css/main.css?v=20260802-copy-fix">
+	<link rel="stylesheet" href="css/plan.css?v=20260809-plan-v1">
+	<script defer src="js/main.js?v=20260809-plan-v1"></script>
+	<script defer src="js/plan.js?v=20260809-plan-v1"></script>
+	<script defer src="js/liquid-glass.js?v=20260801-liquid-glass-v5"></script>
+</head>
+<body class="plan-page is-loading" data-fixed-nav-section="plan">
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header id="site-header">
+		<nav class="nav container" aria-label="主导航">
+			<a class="nav-brand" href="index.html#top" aria-label="返回艾尔岚首页">
+				<img src="img/icon.png" alt="艾尔岚 Logo" width="34" height="34">
+				<span class="nav-brand-copy"><strong>ELLAN.TOP</strong></span>
+			</a>
+			<div class="nav-links">
+				<a href="index.html#top" class="nav-link" data-scroll-section="top">首页</a>
+				<a href="index.html#features" class="nav-link" data-scroll-section="features">核心玩法</a>
+				<a href="index.html#intro" class="nav-link" data-scroll-section="intro">大陆图鉴</a>
+				<a href="index.html#team" class="nav-link" data-scroll-section="team">运营团队</a>
+				<a href="index.html#links" class="nav-link" data-scroll-section="links">新手指南</a>
+				<a href="plan.html" class="nav-link active" data-scroll-section="plan" aria-current="page">大陆数据</a>
+			</div>
+			<div class="nav-actions">
+				<button class="btn btn-quiet btn-sm" type="button" onclick="copyServerIP()">复制 IP</button>
+				<a class="btn btn-ghost btn-sm" href="links/index.html" target="_blank" rel="noopener noreferrer">在线游玩</a>
+			</div>
+		</nav>
+	</header>
+
+	<main id="main">
+		<section id="top" class="plan-hero" aria-labelledby="plan-title">
+			<div class="plan-hero-grid" aria-hidden="true"></div>
+			<div class="plan-orbit plan-orbit-one" aria-hidden="true"></div>
+			<div class="plan-orbit plan-orbit-two" aria-hidden="true"></div>
+			<div class="plan-hero-inner container">
+				<nav class="plan-breadcrumb" aria-label="当前位置"><a href="index.html#top">艾尔岚大陆</a><span aria-hidden="true">·</span><strong aria-current="page">大陆数据</strong></nav>
+				<p class="plan-eyebrow">PLAN · PLAYER ANALYTICS</p>
+				<h1 id="plan-title"><span class="grad-text grad-anim">大陆脉搏</span></h1>
+				<p class="plan-hero-intro">每一次上线、停留与重逢，都会成为世界继续生长的刻度。这里用全服聚合数据，记录艾尔岚此刻的活力。</p>
+
+				<div class="plan-live-card" aria-label="当前在线玩家">
+					<span class="plan-live-dot" aria-hidden="true"></span>
+					<div><strong data-plan-scope="numbers" data-plan-key="online_players" data-plan-format="integer">--</strong><span>位冒险家正在大陆中</span></div>
+					<small>每 60 秒自动同步</small>
+				</div>
+
+				<div id="plan-status" class="plan-status" role="status" aria-live="polite">
+					<span class="plan-status-state"><i aria-hidden="true"></i><b id="plan-status-label">正在连接 PLAN 数据</b></span>
+					<time id="plan-updated">等待首批数据</time>
+					<button id="plan-refresh" class="plan-refresh" type="button">立即刷新</button>
+				</div>
+				<p id="plan-error" class="plan-error" hidden>数据暂时没有抵达，请稍后重试。</p>
+			</div>
+			<div class="scroll-hint" aria-hidden="true"><span>查看大陆刻度</span><i></i></div>
+		</section>
+
+		<noscript><p class="plan-noscript container">此页面需要启用 JavaScript 才能读取实时聚合数据。</p></noscript>
+
+		<section class="plan-section" aria-labelledby="overview-title">
+			<div class="container">
+				<header class="plan-section-head reveal">
+					<p class="kicker">大陆总览 · 实时聚合</p>
+					<h2 id="overview-title">世界不是数字，<span class="grad-text">但数字记得足迹</span></h2>
+					<p>当前在线数据会持续更新；累计指标来自 PLAN 对整个服务器网络的匿名汇总。</p>
+				</header>
+
+				<div class="plan-metric-grid">
+					<article class="plan-metric plan-metric-live reveal">
+						<span class="plan-metric-code">NOW</span>
+						<p>此刻在线</p>
+						<div><strong data-plan-scope="numbers" data-plan-key="online_players" data-plan-format="integer">--</strong><span>人</span></div>
+						<small>正在艾尔岚大陆冒险</small>
+					</article>
+					<article class="plan-metric reveal">
+						<span class="plan-metric-code">ALL</span>
+						<p>到访玩家</p>
+						<div><strong data-plan-scope="numbers" data-plan-key="total_players" data-plan-format="integer">--</strong><span>位</span></div>
+						<small>留下过足迹的冒险家</small>
+					</article>
+					<article class="plan-metric reveal">
+						<span class="plan-metric-code">TIME</span>
+						<p>累计游玩</p>
+						<div><strong data-plan-scope="numbers" data-plan-key="playtime" data-plan-format="hours">--</strong><span>小时</span></div>
+						<small>所有旅程共同累积</small>
+					</article>
+					<article class="plan-metric reveal">
+						<span class="plan-metric-code">LOG</span>
+						<p>游玩会话</p>
+						<div><strong data-plan-scope="numbers" data-plan-key="sessions" data-plan-format="integer">--</strong><span>次</span></div>
+						<small>每次进入与离开的记录</small>
+					</article>
+				</div>
+
+				<div class="plan-record-grid">
+					<article class="plan-record reveal"><span>运行状态</span><strong data-plan-scope="numbers" data-plan-key="current_uptime" data-plan-format="duration">--</strong><small>本轮已连续稳定运行</small></article>
+					<article class="plan-record plan-record-peak reveal"><span>历史同时在线纪录</span><strong><b data-plan-scope="numbers" data-plan-key="best_peak_players" data-plan-format="integer">--</b> 人</strong><small>记录于 <time data-plan-scope="numbers" data-plan-key="best_peak_date" data-plan-format="date">--</time></small></article>
+					<article class="plan-record reveal"><span>人均累计游玩</span><strong data-plan-scope="numbers" data-plan-key="player_playtime" data-plan-format="duration">--</strong><small>每位到访玩家的平均投入</small></article>
+				</div>
+			</div>
+		</section>
+
+		<section class="plan-section plan-section-alt" aria-labelledby="activity-title">
+			<div class="container">
+				<header class="plan-section-head reveal">
+					<p class="kicker">近期活跃 · 三段时间窗</p>
+					<h2 id="activity-title">从今天，看到<span class="grad-text">最近一个月</span></h2>
+					<p>活跃玩家代表时间窗内实际进入过服务器的人数；新玩家代表同期首次被 PLAN 记录的冒险家。</p>
+				</header>
+
+				<div class="plan-activity-grid">
+					<article class="plan-activity-card reveal">
+						<div class="plan-period"><b>01</b><span>最近 24 小时</span></div>
+						<dl><div><dt>活跃玩家</dt><dd data-plan-scope="players" data-plan-key="unique_players_1d" data-plan-format="integer">--</dd></div><div><dt>新玩家</dt><dd data-plan-scope="players" data-plan-key="new_players_1d" data-plan-format="integer">--</dd></div></dl>
+					</article>
+					<article class="plan-activity-card reveal">
+						<div class="plan-period"><b>07</b><span>最近 7 天</span></div>
+						<dl><div><dt>活跃玩家</dt><dd data-plan-scope="players" data-plan-key="unique_players_7d" data-plan-format="integer">--</dd></div><div><dt>新玩家</dt><dd data-plan-scope="players" data-plan-key="new_players_7d" data-plan-format="integer">--</dd></div></dl>
+					</article>
+					<article class="plan-activity-card reveal">
+						<div class="plan-period"><b>30</b><span>最近 30 天</span></div>
+						<dl><div><dt>活跃玩家</dt><dd data-plan-scope="players" data-plan-key="unique_players_30d" data-plan-format="integer">--</dd></div><div><dt>新玩家</dt><dd data-plan-scope="players" data-plan-key="new_players_30d" data-plan-format="integer">--</dd></div></dl>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="plan-section" aria-labelledby="comparison-title">
+			<div class="container">
+				<header class="plan-section-head reveal">
+					<p class="kicker">七日对照 · 社区节奏</p>
+					<h2 id="comparison-title">这一周，世界<span class="grad-text">发生了什么</span></h2>
+					<p>将最近两个连续七日周期放在一起，只呈现变化，不把增长或下降简单定义为好坏。</p>
+				</header>
+
+				<div class="plan-comparison reveal">
+					<div class="plan-comparison-periods">
+						<span><small>上一周期</small><b id="plan-period-before">--</b></span>
+						<i aria-hidden="true">→</i>
+						<span><small>本周期</small><b id="plan-period-after">--</b></span>
+					</div>
+					<div class="plan-table-wrap">
+						<table>
+							<thead><tr><th scope="col">指标</th><th scope="col">上一周期</th><th scope="col">本周期</th><th scope="col">变化</th></tr></thead>
+							<tbody>
+								<tr><th scope="row">活跃玩家</th><td data-label="上一周期" data-plan-scope="weeks" data-plan-key="unique_before" data-plan-format="integer">--</td><td data-label="本周期" data-plan-scope="weeks" data-plan-key="unique_after" data-plan-format="integer">--</td><td data-label="变化"><span class="plan-trend" data-plan-trend="unique">--</span></td></tr>
+								<tr><th scope="row">新玩家</th><td data-label="上一周期" data-plan-scope="weeks" data-plan-key="new_before" data-plan-format="integer">--</td><td data-label="本周期" data-plan-scope="weeks" data-plan-key="new_after" data-plan-format="integer">--</td><td data-label="变化"><span class="plan-trend" data-plan-trend="new">--</span></td></tr>
+								<tr><th scope="row">稳定活跃玩家</th><td data-label="上一周期" data-plan-scope="weeks" data-plan-key="regular_before" data-plan-format="integer">--</td><td data-label="本周期" data-plan-scope="weeks" data-plan-key="regular_after" data-plan-format="integer">--</td><td data-label="变化"><span class="plan-trend" data-plan-trend="regular">--</span></td></tr>
+								<tr><th scope="row">人均游玩时长</th><td data-label="上一周期" data-plan-scope="weeks" data-plan-key="average_playtime_before" data-plan-format="duration">--</td><td data-label="本周期" data-plan-scope="weeks" data-plan-key="average_playtime_after" data-plan-format="duration">--</td><td data-label="变化"><span class="plan-trend" data-plan-trend="average-playtime">--</span></td></tr>
+								<tr><th scope="row">平均单次会话</th><td data-label="上一周期" data-plan-scope="weeks" data-plan-key="session_length_average_before" data-plan-format="duration">--</td><td data-label="本周期" data-plan-scope="weeks" data-plan-key="session_length_average_after" data-plan-format="duration">--</td><td data-label="变化"><span class="plan-trend" data-plan-trend="session-length">--</span></td></tr>
+								<tr><th scope="row">游玩会话</th><td data-label="上一周期" data-plan-scope="weeks" data-plan-key="sessions_before" data-plan-format="integer">--</td><td data-label="本周期" data-plan-scope="weeks" data-plan-key="sessions_after" data-plan-format="integer">--</td><td data-label="变化"><span class="plan-trend" data-plan-trend="sessions">--</span></td></tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<aside class="plan-data-note reveal" aria-label="数据说明">
+					<div><p class="kicker">公开数据边界</p><h3>只看大陆，不追踪个人</h3></div>
+					<p>本页只展示 PLAN 生成的全服聚合指标，不公开玩家名称、个人会话、IP 地址或地理位置。统计可能因服务器维护或数据同步产生短暂延迟。</p>
+					<a href="http://43.249.195.103:16884/network" target="_blank" rel="noopener noreferrer">查看原始 PLAN 面板 <span aria-hidden="true">↗</span></a>
+				</aside>
+			</div>
+		</section>
+
+		<section class="plan-finale" aria-labelledby="plan-finale-title">
+			<div class="container reveal">
+				<p class="kicker">下一条数据，由你写下</p>
+				<h2 id="plan-finale-title">看见世界正在生长，<br><span class="grad-text">然后成为其中一部分</span></h2>
+				<p>数字会刷新，留下的建筑、友谊与故事不会。艾尔岚大陆正在运行。</p>
+				<div class="plan-finale-actions"><button class="btn btn-rune" type="button" onclick="copyServerIP()">复制 IP · ellan.top</button><a class="btn btn-ghost" href="gameplay.html">查看玩法百科</a><a class="btn btn-quiet" href="index.html#top">返回首页</a></div>
+			</div>
+		</section>
+	</main>
+
+	<footer><div class="container footer-inner"><strong>ELLAN.TOP</strong><span>艾尔岚工作室 · © 2022—2026 · 纯公益 · 长期运营 · 原版生存</span><p class="footer-legal">艾尔岚是玩家自发组织的非官方社区服务器，与 Mojang Studios、Microsoft 及网易公司无任何隶属、授权或赞助关系；「Minecraft」「我的世界」均为其各自权利方的商标；本页数据由 Plan Player Analytics 聚合生成。</p></div></footer>
+	<div id="toast-root" aria-live="polite"></div>
+</body>
+</html>
