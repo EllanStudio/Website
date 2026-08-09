@@ -11,6 +11,7 @@ const STALE_TTL_SECONDS = 300;
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+header('X-Robots-Tag: noindex, nofollow');
 
 function respondWithError(int $status, string $message): void
 {

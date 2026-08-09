@@ -86,12 +86,28 @@
 		return data.numbers;
 	}
 
+	function asTimeElement(element, timestamp) {
+		if (!element || !validTimestamp(timestamp)) return element;
+		if (element.tagName !== 'TIME') {
+			var time = document.createElement('time');
+			Array.from(element.attributes).forEach(function (attribute) {
+				time.setAttribute(attribute.name, attribute.value);
+			});
+			element.replaceWith(time);
+			element = time;
+		}
+		element.dateTime = new Date(timestamp).toISOString();
+		return element;
+	}
+
 	function renderBindings(data) {
 		document.querySelectorAll('[data-plan-key]').forEach(function (element) {
 			var source = sourceFor(data, element.getAttribute('data-plan-scope'));
 			var key = element.getAttribute('data-plan-key');
 			var format = element.getAttribute('data-plan-format') || 'integer';
-			element.textContent = formatValue(source && source[key], format);
+			var value = source && source[key];
+			if (format === 'date') element = asTimeElement(element, finiteNumber(value));
+			element.textContent = formatValue(value, format);
 		});
 	}
 
@@ -219,7 +235,7 @@
 		}
 		var timestamp = finiteNumber(data.timestamp) || Date.now();
 		if (updated) {
-			updated.dateTime = new Date(timestamp).toISOString();
+			updated = asTimeElement(updated, timestamp);
 			updated.textContent = '更新于 ' + dateFormatter.format(new Date(timestamp));
 		}
 	}

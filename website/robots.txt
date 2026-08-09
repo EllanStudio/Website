@@ -1,0 +1,9 @@
+# Public pages are available to search and AI crawlers.
+User-agent: *
+Allow: /
+Disallow: /files/
+Disallow: /design-qa
+Disallow: /ELLAN
+Disallow: /GAMEPLAY
+
+Sitemap: https://ellan.site/sitemap.xml

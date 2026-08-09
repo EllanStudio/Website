@@ -95,13 +95,42 @@ jobs:
           printf 'Nginx plan.html SHA-256: %s\n' "$served_plan_checksum"
           test "$local_plan_checksum" = "$served_plan_checksum"
 
+          local_gameplay_checksum="$(sha256sum website/gameplay.html | awk '{print $1}')"
+          served_gameplay_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/gameplay.html' | sha256sum | awk '{print $1}')"
+          printf 'Local gameplay.html SHA-256: %s\n' "$local_gameplay_checksum"
+          printf 'Nginx gameplay.html SHA-256: %s\n' "$served_gameplay_checksum"
+          test "$local_gameplay_checksum" = "$served_gameplay_checksum"
+
+          for seo_file in robots.txt sitemap.xml llms.txt; do
+            local_seo_checksum="$(sha256sum "website/$seo_file" | awk '{print $1}')"
+            served_seo_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" "https://ellan.site/$seo_file" | sha256sum | awk '{print $1}')"
+            printf 'Local %s SHA-256: %s\n' "$seo_file" "$local_seo_checksum"
+            printf 'Nginx %s SHA-256: %s\n' "$seo_file" "$served_seo_checksum"
+            test "$local_seo_checksum" = "$served_seo_checksum"
+          done
+
+          noindex_pages=(
+            'links/index.html'
+            'links/wasm/index.html'
+            'links/Eaglercraft_1.12_Offline_en_US.html'
+            'temp/index.html'
+            'temp/about.html'
+            'temp/timeline.html'
+            'temp/survivors.html'
+            'temp/prevent.html'
+          )
+          for noindex_page in "${noindex_pages[@]}"; do
+            ssh "${ssh_options[@]}" "$target" "grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' '$DEPLOY_PATH/$noindex_page' > /dev/null"
+          done
+
           curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/css/plan.css' > /dev/null
           curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/js/plan.js' > /dev/null
-          plan_content_type="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" -o "$RUNNER_TEMP/plan-network.json" -w '%{content_type}' 'https://ellan.site/api/plan-network.php')"
+          plan_content_type="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" --dump-header "$RUNNER_TEMP/plan-network.headers" -o "$RUNNER_TEMP/plan-network.json" -w '%{content_type}' 'https://ellan.site/api/plan-network.php')"
           case "$plan_content_type" in
             application/json*) ;;
             *) printf 'Unexpected PLAN API content type: %s\n' "$plan_content_type" >&2; exit 1 ;;
           esac
+          grep -i -F 'x-robots-tag: noindex, nofollow' "$RUNNER_TEMP/plan-network.headers" > /dev/null
           jq -e '
             def numeric_object($required):
               (type == "object") and

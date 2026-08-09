@@ -182,7 +182,7 @@ body.plan-page { background: var(--bg); }
 .is-loaded .plan-status-state i { background: var(--leaf); }
 .has-plan-stale .plan-status-state i { background: var(--gold); }
 .has-plan-error .plan-status-state i { background: var(--danger); }
-.plan-status time { white-space: nowrap; }
+.plan-status .plan-updated { white-space: nowrap; }
 .plan-refresh { padding: 5px 1px; color: var(--aqua); font-size: 10px; font-weight: 700; border-bottom: 1px solid rgba(94, 214, 196, .35); }
 .plan-refresh:hover { color: var(--text); border-color: var(--text); }
 .plan-refresh:disabled { opacity: .42; cursor: wait; }
@@ -378,7 +378,7 @@ body.plan-page { background: var(--bg); }
 	.plan-live-card div span { font-size: 12px; }
 	.plan-live-card small { grid-column: 2; white-space: normal; }
 	.plan-status { grid-template-columns: 1fr auto; gap: 8px 12px; }
-	.plan-status time { grid-column: 1 / -1; grid-row: 2; }
+	.plan-status .plan-updated { grid-column: 1 / -1; grid-row: 2; }
 	.plan-refresh { grid-column: 2; grid-row: 1; }
 	.plan-metric-grid { grid-template-columns: 1fr; }
 	.plan-metric { min-height: 225px; }
