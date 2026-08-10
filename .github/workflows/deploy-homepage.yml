@@ -26,9 +26,10 @@ jobs:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/www/wwwroot/homepage/homepage-1.3' }}
     steps:
       - name: Check out repository with Git LFS
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           lfs: true
+          persist-credentials: false
 
       - name: Configure SSH
         shell: bash
@@ -103,6 +104,11 @@ jobs:
           printf 'Local plan.html SHA-256: %s\n' "$local_plan_checksum"
           printf 'Nginx plan.html SHA-256: %s\n' "$served_plan_checksum"
           test "$local_plan_checksum" = "$served_plan_checksum"
+          if grep -Fq '43.249.195.103:16884' website/plan.html ||
+             grep -Fq 'PLAN 面板' website/plan.html; then
+            printf 'Forbidden original PLAN panel reference found in plan.html\n' >&2
+            exit 1
+          fi
 
           local_gameplay_checksum="$(sha256sum website/gameplay.html | awk '{print $1}')"
           served_gameplay_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/gameplay.html' | sha256sum | awk '{print $1}')"
@@ -134,6 +140,19 @@ jobs:
 
           curl "${curl_options[@]}" 'https://ellan.site/css/plan.css' > /dev/null
           curl "${curl_options[@]}" 'https://ellan.site/js/plan.js' > /dev/null
+          for asset in css/plan.css js/plan.js; do
+            asset_name="$(printf '%s' "$asset" | tr '/' '-')"
+            asset_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/$asset_name.headers" -o "$RUNNER_TEMP/$asset_name.body" -w '%{content_type}' "https://ellan.site/$asset")"
+            case "$asset_content_type" in
+              text/css*|application/javascript*|text/javascript*) ;;
+              *) printf 'Unexpected content type for %s: %s\n' "$asset" "$asset_content_type" >&2; exit 1 ;;
+            esac
+            local_asset_checksum="$(sha256sum "website/$asset" | awk '{print $1}')"
+            served_asset_checksum="$(sha256sum "$RUNNER_TEMP/$asset_name.body" | awk '{print $1}')"
+            printf 'Local %s SHA-256: %s\n' "$asset" "$local_asset_checksum"
+            printf 'Nginx %s SHA-256: %s\n' "$asset" "$served_asset_checksum"
+            test "$local_asset_checksum" = "$served_asset_checksum"
+          done
           plan_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/plan-network.headers" -o "$RUNNER_TEMP/plan-network.json" -w '%{content_type}' 'https://ellan.site/api/plan-network.php')"
           case "$plan_content_type" in
             application/json*) ;;
@@ -170,43 +189,123 @@ jobs:
             *) printf 'Unexpected PLAN performance API content type: %s\n' "$performance_content_type" >&2; exit 1 ;;
           esac
           grep -i -F 'x-robots-tag: noindex, nofollow' "$RUNNER_TEMP/plan-performance.headers" > /dev/null
+          if grep -qi -F 'x-plan-data-stale: 1' "$RUNNER_TEMP/plan-performance.headers"; then
+            printf 'PLAN performance API returned stale data\n' >&2
+            exit 1
+          fi
           jq -e '
-            def sampled_series($minimum; $maximum):
-              . as $series |
+            def exact_keys($expected): (keys | sort) == ($expected | sort);
+            def nullable_series($length; $minimum; $maximum):
               (type == "array") and
-              (length == 145) and
-              all(range(0; ($series | length));
-                ($series[.] | type == "array") and
-                ($series[.] | length == 2) and
-                ($series[.][0] | type == "number") and
-                ($series[.][1] == null or (
-                  ($series[.][1] | type == "number") and
-                  ($series[.][1] >= $minimum) and
-                  ($series[.][1] <= $maximum)
-                ))
-              ) and
-              all(range(1; ($series | length));
-                ($series[.][0] - $series[. - 1][0]) == 600000
-              ) and
-              (($series[0][0] % 600000) == 0) and
-              (($series[-1][0] - $series[0][0]) == 86400000) and
-              ([$series[][1] | select(. != null)] | length >= 2);
+              (length == $length) and
+              all(.[]; . == null or ((type == "number") and . >= $minimum and . <= $maximum)) and
+              (map(select(. != null)) | length >= 2);
+            def nullable_number($minimum; $maximum):
+              . == null or ((type == "number") and . >= $minimum and . <= $maximum);
+            def valid_node_current($current):
+              ($current | exact_keys([
+                "players", "tps", "cpu", "memory_mb", "entities", "chunks", "disk_mb",
+                "mspt_average", "mspt_p95", "ping_min", "ping_average", "ping_max"
+              ])) and
+              ($current.players | nullable_number(0; 1000000)) and
+              ($current.tps | nullable_number(0; 21)) and
+              ($current.cpu | nullable_number(0; 100)) and
+              ($current.memory_mb | nullable_number(0; 1000000)) and
+              ($current.entities | nullable_number(0; 100000000)) and
+              ($current.chunks | nullable_number(0; 100000000)) and
+              ($current.disk_mb | nullable_number(0; 1000000000)) and
+              ($current.mspt_average | nullable_number(0; 1000000)) and
+              ($current.mspt_p95 | nullable_number(0; 1000000)) and
+              ($current.ping_min | nullable_number(0; 1000000)) and
+              ($current.ping_average | nullable_number(0; 1000000)) and
+              ($current.ping_max | nullable_number(0; 1000000));
+            def valid_network_current($current):
+              ($current | exact_keys([
+                "players", "cpu_max", "memory_total_mb", "entities_total", "chunks_total",
+                "tps_min", "mspt_p95_max", "reporting_nodes"
+              ])) and
+              ($current.players | nullable_number(0; 1000000)) and
+              ($current.cpu_max | nullable_number(0; 100)) and
+              ($current.memory_total_mb | nullable_number(0; 3000000)) and
+              ($current.entities_total | nullable_number(0; 300000000)) and
+              ($current.chunks_total | nullable_number(0; 300000000)) and
+              ($current.tps_min | nullable_number(0; 21)) and
+              ($current.mspt_p95_max | nullable_number(0; 1000000)) and
+              ($current.reporting_nodes | nullable_number(0; 3));
+            def valid_range($id; $label; $window; $bucket; $length):
+              .[$id] as $range |
+              ($range | exact_keys(["label", "window_ms", "bucket_ms", "timestamps"])) and
+              ($range.label == $label) and
+              ($range.window_ms == $window) and
+              ($range.bucket_ms == $bucket) and
+              ($range.timestamps | type == "array" and length == $length) and
+              ($range.timestamps[0] % $bucket == 0) and
+              ($range.timestamps[-1] - $range.timestamps[0] == $window) and
+              all(range(1; $length); $range.timestamps[.] - $range.timestamps[. - 1] == $bucket);
+            def valid_node_series($series; $length):
+              ($series | exact_keys([
+                "players", "tps", "cpu", "memory_mb", "entities", "chunks", "disk_mb",
+                "mspt_average", "mspt_p95", "ping_min", "ping_average", "ping_max"
+              ])) and
+              ($series.players | nullable_series($length; 0; 1000000)) and
+              ($series.tps | nullable_series($length; 0; 21)) and
+              ($series.cpu | nullable_series($length; 0; 100)) and
+              ($series.memory_mb | nullable_series($length; 0; 1000000)) and
+              ($series.entities | nullable_series($length; 0; 100000000)) and
+              ($series.chunks | nullable_series($length; 0; 100000000)) and
+              ($series.disk_mb | nullable_series($length; 0; 1000000000)) and
+              ($series.mspt_average | nullable_series($length; 0; 1000000)) and
+              ($series.mspt_p95 | nullable_series($length; 0; 1000000)) and
+              ($series.ping_min | nullable_series($length; 0; 1000000)) and
+              ($series.ping_average | nullable_series($length; 0; 1000000)) and
+              ($series.ping_max | nullable_series($length; 0; 1000000));
+            def valid_network_series($series; $length):
+              ($series | exact_keys([
+                "players", "cpu_max", "memory_total_mb", "entities_total", "chunks_total",
+                "tps_min", "mspt_p95_max", "reporting_nodes"
+              ])) and
+              ($series.players | nullable_series($length; 0; 1000000)) and
+              ($series.cpu_max | nullable_series($length; 0; 100)) and
+              ($series.memory_total_mb | nullable_series($length; 0; 3000000)) and
+              ($series.entities_total | nullable_series($length; 0; 300000000)) and
+              ($series.chunks_total | nullable_series($length; 0; 300000000)) and
+              ($series.tps_min | nullable_series($length; 0; 21)) and
+              ($series.mspt_p95_max | nullable_series($length; 0; 1000000)) and
+              ($series.reporting_nodes | nullable_series($length; 0; 3));
             . as $payload |
+            (exact_keys(["timestamp", "refresh_seconds", "ranges", "nodes", "network"])) and
             (.timestamp | type == "number") and
-            (.window_ms == 86400000) and
-            (.bucket_ms == 600000) and
             (.refresh_seconds == 300) and
-            ((.current | keys | sort) == ["memory_mb", "players", "tps"]) and
-            all(.current[]; type == "number") and
-            (.current.tps >= 0 and .current.tps <= 21) and
-            (.current.memory_mb >= 0 and .current.memory_mb <= 1000000) and
-            (.current.players >= 0 and .current.players <= 1000000) and
-            ((.series | keys | sort) == ["memory", "players", "tps"]) and
-            (.series.tps | sampled_series(0; 21)) and
-            (.series.memory | sampled_series(0; 1000000)) and
-            (.series.players | sampled_series(0; 1000000)) and
-            all(range(0; ($payload.series.tps | length));
-              ($payload.series.tps[.][0] == $payload.series.memory[.][0]) and
-              ($payload.series.tps[.][0] == $payload.series.players[.][0])
-            )
+            (.timestamp >= ((now * 1000) - 1800000)) and
+            (.ranges | exact_keys(["6h", "24h", "7d", "30d"])) and
+            (.ranges | valid_range("6h"; "6 小时"; 21600000; 120000; 181)) and
+            (.ranges | valid_range("24h"; "24 小时"; 86400000; 600000; 145)) and
+            (.ranges | valid_range("7d"; "7 天"; 604800000; 3600000; 169)) and
+            (.ranges | valid_range("30d"; "30 天"; 2592000000; 21600000; 121)) and
+            (.nodes | type == "array" and length == 3) and
+            ([.nodes[].id] == ["redstone", "spawn", "survival"]) and
+            (.nodes[0].label == "红石服" and .nodes[0].source == "Redstone" and .nodes[0].color == "#f5be4f") and
+            (.nodes[1].label == "主城服" and .nodes[1].source == "Spawn" and .nodes[1].color == "#5ed6c4") and
+            (.nodes[2].label == "生存服" and .nodes[2].source == "Survival" and .nodes[2].color == "#8fdd55") and
+            all(.nodes[];
+              (exact_keys(["id", "label", "source", "color", "timestamp", "fresh", "current", "series"])) and
+              (.timestamp | type == "number") and
+              (.fresh | type == "boolean") and
+              valid_node_current(.current) and
+              (.series | exact_keys(["6h", "24h", "7d", "30d"])) and
+              valid_node_series(.series["6h"]; 181) and
+              valid_node_series(.series["24h"]; 145) and
+              valid_node_series(.series["7d"]; 169) and
+              valid_node_series(.series["30d"]; 121)
+            ) and
+            (.network | exact_keys(["timestamp", "current", "series"])) and
+            (.network.timestamp | type == "number") and
+            valid_network_current(.network.current) and
+            (.network.series | exact_keys(["6h", "24h", "7d", "30d"])) and
+            valid_network_series(.network.series["6h"]; 181) and
+            valid_network_series(.network.series["24h"]; 145) and
+            valid_network_series(.network.series["7d"]; 169) and
+            valid_network_series(.network.series["30d"]; 121) and
+            all(.network.series[]; all(.reporting_nodes[]; . == null or ((type == "number") and floor == .))) and
+            (.network.current.reporting_nodes == null or ((.network.current.reporting_nodes | type == "number") and (.network.current.reporting_nodes | floor) == .network.current.reporting_nodes))
           ' "$RUNNER_TEMP/plan-performance.json" > /dev/null

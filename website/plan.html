@@ -6,7 +6,7 @@
 	<title>大陆数据 · Ellan 艾尔岚 Minecraft 服务器</title>
 	<meta name="language" content="zh-CN">
 	<meta name="author" content="Ellan">
-	<meta name="description" content="查看艾尔岚 Minecraft 服务器的实时在线人数、TPS、内存使用、累计数据与近 24 小时运行趋势。">
+	<meta name="description" content="查看艾尔岚 Minecraft 群组服务器的实时在线人数，以及红石服、主城服与生存服的 TPS、CPU、内存、MSPT、延迟和世界负载趋势。">
 	<meta name="keywords" content="Minecraft,艾尔岚,Ellan,MC服务器,服务器数据,PLAN">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<link rel="canonical" href="https://ellan.site/plan.html">
@@ -14,7 +14,7 @@
 	<meta property="og:locale" content="zh_CN">
 	<meta property="og:site_name" content="艾尔岚 Minecraft 服务器">
 	<meta property="og:title" content="大陆数据 · Ellan 艾尔岚">
-	<meta property="og:description" content="查看实时在线、TPS、内存使用、累计数据与近 24 小时运行趋势。">
+	<meta property="og:description" content="查看群组实时在线及各节点 TPS、CPU、内存、MSPT、延迟与世界负载趋势。">
 	<meta property="og:url" content="https://ellan.site/plan.html">
 	<meta property="og:image" content="https://ellan.site/img/hero-world.jpg">
 	<meta property="og:image:type" content="image/jpeg">
@@ -23,7 +23,7 @@
 	<meta property="og:image:alt" content="艾尔岚 Minecraft 服务器大陆实景">
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="大陆数据 · Ellan 艾尔岚">
-	<meta name="twitter:description" content="查看艾尔岚实时在线、TPS、内存与近 24 小时运行趋势。">
+	<meta name="twitter:description" content="查看艾尔岚群组及各游戏节点的完整运行趋势。">
 	<meta name="twitter:image" content="https://ellan.site/img/hero-world.jpg">
 	<meta name="twitter:image:alt" content="艾尔岚 Minecraft 服务器大陆实景">
 	<script type="application/ld+json">
@@ -66,7 +66,7 @@
 				"@type": "Dataset",
 				"@id": "https://ellan.site/plan.html#dataset",
 				"name": "艾尔岚大陆聚合统计",
-				"description": "艾尔岚 Minecraft 服务器的实时在线、TPS、内存使用、累计数据与近期活跃趋势。",
+				"description": "艾尔岚 Minecraft 群组服务器的实时在线、节点性能、世界负载与近期活跃趋势。",
 				"url": "https://ellan.site/plan.html",
 				"inLanguage": "zh-CN",
 				"creator": { "@id": "https://ellan.site/#organization" },
@@ -74,9 +74,11 @@
 				"measurementTechnique": "PLAN Player Analytics 匿名聚合统计",
 				"variableMeasured": [
 					"实时在线人数",
-					"主生存服 TPS",
-					"主生存服内存使用",
-					"近 24 小时运行趋势",
+					"红石服、主城服与生存服 TPS",
+					"节点 CPU 与内存使用",
+					"MSPT 平均值与第 95 百分位",
+					"节点延迟、实体、区块与可用磁盘",
+					"近 6 小时、24 小时、7 天与 30 天运行趋势",
 					"累计到访玩家",
 					"累计游玩时长",
 					"游玩会话数量",
@@ -88,7 +90,7 @@
 				"@id": "https://ellan.site/plan.html#webpage",
 				"url": "https://ellan.site/plan.html",
 				"name": "大陆数据 · Ellan 艾尔岚 Minecraft 服务器",
-				"description": "查看艾尔岚 Minecraft 服务器的实时在线、TPS、内存、累计数据与近期趋势。",
+				"description": "查看艾尔岚 Minecraft 群组及各节点的实时在线、完整性能、累计数据与近期趋势。",
 				"inLanguage": "zh-CN",
 				"isPartOf": { "@id": "https://ellan.site/#website" },
 				"publisher": { "@id": "https://ellan.site/#organization" },
@@ -130,9 +132,9 @@
 		} catch (e) { /* storage may be unavailable */ }
 	</script>
 	<link rel="stylesheet" href="css/main.css?v=20260802-copy-fix">
-	<link rel="stylesheet" href="css/plan.css?v=20260810-plan-charts-v1">
+	<link rel="stylesheet" href="css/plan.css?v=20260810-plan-telemetry-v2">
 	<script defer src="js/main.js?v=20260809-plan-v1"></script>
-	<script defer src="js/plan.js?v=20260810-plan-charts-v1"></script>
+	<script defer src="js/plan.js?v=20260810-plan-telemetry-v2"></script>
 	<script defer src="js/liquid-glass.js?v=20260801-liquid-glass-v5"></script>
 </head>
 <body class="plan-page is-loading" data-fixed-nav-section="plan">
@@ -168,7 +170,7 @@
 				<nav class="plan-breadcrumb" aria-label="当前位置"><a href="index.html#top">艾尔岚大陆</a><span aria-hidden="true">·</span><strong aria-current="page">大陆数据</strong></nav>
 				<p class="plan-eyebrow">PLAN · PLAYER ANALYTICS</p>
 				<h1 id="plan-title"><span class="grad-text grad-anim">大陆脉搏</span></h1>
-				<p class="plan-hero-intro">全服状态与近 24 小时趋势。</p>
+				<p class="plan-hero-intro">群组状态与多节点运行遥测。</p>
 
 				<div class="plan-live-card" role="group" aria-label="当前在线玩家">
 					<span class="plan-live-dot" aria-hidden="true"></span>
@@ -210,26 +212,62 @@
 
 				<section class="plan-trends" aria-labelledby="trend-title">
 					<header class="plan-trend-head reveal">
-						<div><p class="kicker">LIVE · 24 HOURS</p><h3 id="trend-title">运行趋势</h3></div>
+						<div><p class="kicker">LIVE · TELEMETRY</p><h3 id="trend-title">运行趋势</h3></div>
 						<span id="plan-chart-status" role="status" aria-live="polite">读取中</span>
 					</header>
-					<div class="plan-chart-grid">
-						<article class="plan-chart-card plan-chart-tps reveal" data-plan-chart="tps">
-							<header><div><h4>TPS</h4><small>主生存服</small></div><strong><b data-plan-chart-value>--</b><small>/ 20</small></strong></header>
-							<div class="plan-chart-plot"><svg viewBox="0 0 360 150" role="img" aria-labelledby="chart-tps-title chart-tps-desc"><title id="chart-tps-title">主生存服 TPS 趋势</title><desc id="chart-tps-desc" data-plan-chart-desc>正在读取近 24 小时数据。</desc><g class="plan-chart-gridlines" aria-hidden="true"><line x1="0" y1="25" x2="360" y2="25"></line><line x1="0" y1="75" x2="360" y2="75"></line><line x1="0" y1="125" x2="360" y2="125"></line></g><path class="plan-chart-area" data-plan-chart-area></path><path class="plan-chart-line" data-plan-chart-line></path><circle class="plan-chart-point" data-plan-chart-point r="4"></circle></svg><p class="plan-chart-empty" data-plan-chart-empty>读取中</p></div>
-							<footer><span data-plan-chart-min>低 --</span><span>24H</span><span data-plan-chart-max>高 --</span></footer>
-						</article>
-						<article class="plan-chart-card plan-chart-memory reveal" data-plan-chart="memory">
-							<header><div><h4>内存</h4><small>主生存服</small></div><strong><b data-plan-chart-value>--</b><small>GB</small></strong></header>
-							<div class="plan-chart-plot"><svg viewBox="0 0 360 150" role="img" aria-labelledby="chart-memory-title chart-memory-desc"><title id="chart-memory-title">主生存服内存使用趋势</title><desc id="chart-memory-desc" data-plan-chart-desc>正在读取近 24 小时数据。</desc><g class="plan-chart-gridlines" aria-hidden="true"><line x1="0" y1="25" x2="360" y2="25"></line><line x1="0" y1="75" x2="360" y2="75"></line><line x1="0" y1="125" x2="360" y2="125"></line></g><path class="plan-chart-area" data-plan-chart-area></path><path class="plan-chart-line" data-plan-chart-line></path><circle class="plan-chart-point" data-plan-chart-point r="4"></circle></svg><p class="plan-chart-empty" data-plan-chart-empty>读取中</p></div>
-							<footer><span data-plan-chart-min>低 --</span><span>24H</span><span data-plan-chart-max>高 --</span></footer>
-						</article>
-						<article class="plan-chart-card plan-chart-players reveal" data-plan-chart="players">
-							<header><div><h4>在线玩家</h4><small>全服</small></div><strong><b data-plan-chart-value>--</b><small>人</small></strong></header>
-							<div class="plan-chart-plot"><svg viewBox="0 0 360 150" role="img" aria-labelledby="chart-players-title chart-players-desc"><title id="chart-players-title">全服在线玩家趋势</title><desc id="chart-players-desc" data-plan-chart-desc>正在读取近 24 小时数据。</desc><g class="plan-chart-gridlines" aria-hidden="true"><line x1="0" y1="25" x2="360" y2="25"></line><line x1="0" y1="75" x2="360" y2="75"></line><line x1="0" y1="125" x2="360" y2="125"></line></g><path class="plan-chart-area" data-plan-chart-area></path><path class="plan-chart-line" data-plan-chart-line></path><circle class="plan-chart-point" data-plan-chart-point r="4"></circle></svg><p class="plan-chart-empty" data-plan-chart-empty>读取中</p></div>
-							<footer><span data-plan-chart-min>低 --</span><span>24H</span><span data-plan-chart-max>高 --</span></footer>
-						</article>
+
+					<div class="plan-trend-controls reveal">
+						<div class="plan-control-group"><span>时间范围</span><div class="plan-segmented" role="group" aria-label="选择趋势时间范围"><button type="button" data-plan-range="6h">6H</button><button class="is-active" type="button" data-plan-range="24h" aria-pressed="true">24H</button><button type="button" data-plan-range="7d">7D</button><button type="button" data-plan-range="30d">30D</button></div></div>
+						<div class="plan-control-group plan-control-category"><span>指标分类</span><div id="plan-category-picker" class="plan-segmented" role="group" aria-label="选择指标分类"></div></div>
 					</div>
+
+					<article class="plan-performance-shell reveal" aria-label="服务器性能交互图表">
+						<header class="plan-chart-toolbar">
+							<div><span class="plan-control-label">当前指标</span><div id="plan-metric-picker" class="plan-metric-picker" role="group" aria-label="选择性能指标"></div></div>
+							<div><span class="plan-control-label">显示节点</span><div id="plan-node-picker" class="plan-node-picker" role="group" aria-label="选择服务器节点"></div></div>
+							<button id="plan-chart-reset" class="plan-chart-reset" type="button" disabled>重置选区</button>
+						</header>
+
+						<div id="plan-chart-stage" class="plan-chart-stage is-loading">
+							<div class="plan-chart-heading"><div><p id="plan-chart-scope">群组汇总</p><h4 id="plan-chart-title">在线玩家</h4></div><strong id="plan-chart-window">24 小时</strong></div>
+							<div class="plan-chart-frame">
+								<svg id="plan-performance-chart" viewBox="0 0 760 340" role="img" tabindex="0" aria-labelledby="plan-performance-title plan-performance-desc">
+									<title id="plan-performance-title">艾尔岚服务器运行趋势</title>
+									<desc id="plan-performance-desc">正在读取服务器性能数据。读取后可使用左右方向键检查时间点。</desc>
+									<g data-plan-chart-grid aria-hidden="true"></g>
+									<g data-plan-chart-lines aria-hidden="true"></g>
+									<line class="plan-chart-crosshair is-hidden" data-plan-chart-crosshair x1="0" y1="20" x2="0" y2="302"></line>
+									<g data-plan-chart-focus aria-hidden="true"></g>
+									<rect class="plan-chart-selection is-hidden" data-plan-chart-selection x="0" y="20" width="0" height="282"></rect>
+									<rect class="plan-chart-interaction" data-plan-chart-interaction x="58" y="20" width="682" height="282"></rect>
+								</svg>
+								<div id="plan-chart-tooltip" class="plan-chart-tooltip" hidden></div>
+								<p id="plan-chart-empty" class="plan-chart-empty">读取中</p>
+							</div>
+							<div id="plan-chart-legend" class="plan-chart-legend" role="list" aria-label="图表图例"></div>
+								<p class="plan-chart-hint">移动指针查看时间点；在图中横向拖拽可放大区间，双击可重置。键盘可使用左右方向键。</p>
+								<p id="plan-chart-live-status" class="plan-visually-hidden" aria-live="polite"></p>
+						</div>
+
+						<div class="plan-stat-table-wrap">
+							<table class="plan-stat-table">
+								<caption id="plan-stat-caption">24 小时区间统计</caption>
+								<thead><tr><th scope="col">序列</th><th id="plan-stat-point-label" scope="col">末值</th><th scope="col">平均</th><th scope="col">最低</th><th scope="col">最高</th><th scope="col">样本</th></tr></thead>
+								<tbody id="plan-stat-body"><tr><td colspan="6">等待数据</td></tr></tbody>
+							</table>
+						</div>
+					</article>
+
+					<section class="plan-node-snapshot reveal" aria-labelledby="node-snapshot-title">
+						<header><div><p class="kicker">CURRENT · ALL METRICS</p><h4 id="node-snapshot-title">节点实时快照</h4></div><small>群组合计仅在 3 个游戏节点均上报时显示</small></header>
+						<div class="plan-snapshot-table-wrap">
+							<table class="plan-snapshot-table">
+								<thead><tr><th scope="col">范围</th><th scope="col">状态</th><th scope="col">在线</th><th scope="col">TPS</th><th scope="col">CPU</th><th scope="col">内存</th><th scope="col">MSPT 平均 / P95</th><th scope="col">延迟 平均（低–高）</th><th scope="col">实体</th><th scope="col">区块</th><th scope="col">可用磁盘</th></tr></thead>
+								<tbody id="plan-snapshot-body"><tr><td colspan="11">等待数据</td></tr></tbody>
+							</table>
+						</div>
+					</section>
+					<p class="plan-aggregate-note reveal">CPU 来自各节点宿主机系统负载，群组只展示上报节点中的最高值；内存、实体与区块为三个游戏节点完整上报时的合计。TPS 与 MSPT 不跨 JVM 相加，而分别展示最低 TPS 与最高 P95 MSPT。Velocity 代理仅提供全服在线人数。</p>
 				</section>
 			</div>
 		</section>
@@ -242,7 +280,7 @@
 					<article class="plan-activity-card reveal"><div class="plan-period"><b>07</b><h3>7 天</h3></div><dl><div><dt>活跃</dt><dd data-plan-scope="players" data-plan-key="unique_players_7d" data-plan-format="integer">--</dd></div><div><dt>新增</dt><dd data-plan-scope="players" data-plan-key="new_players_7d" data-plan-format="integer">--</dd></div></dl></article>
 					<article class="plan-activity-card reveal"><div class="plan-period"><b>30</b><h3>30 天</h3></div><dl><div><dt>活跃</dt><dd data-plan-scope="players" data-plan-key="unique_players_30d" data-plan-format="integer">--</dd></div><div><dt>新增</dt><dd data-plan-scope="players" data-plan-key="new_players_30d" data-plan-format="integer">--</dd></div></dl></article>
 				</div>
-				<aside class="plan-data-note reveal" aria-label="数据说明"><p>仅展示全服聚合数据，不含个人信息。</p><a href="http://43.249.195.103:16884/network" target="_blank" rel="noopener noreferrer">PLAN 面板 <span aria-hidden="true">↗</span></a></aside>
+				<aside class="plan-data-note reveal" aria-label="数据说明"><p>仅展示服务器级匿名聚合数据，不公开玩家名称、个人会话、IP 地址或地理位置。</p></aside>
 			</div>
 		</section>
 
