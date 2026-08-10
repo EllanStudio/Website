@@ -116,16 +116,16 @@ body.plan-page { background: var(--bg); }
 	animation: heroRise 1s var(--ease-out) .2s both;
 }
 .plan-hero-intro {
-	max-width: 710px;
-	margin: 26px auto 0;
+	max-width: 520px;
+	margin: 22px auto 0;
 	color: var(--text-dim);
 	font-size: 15px;
-	line-height: 2;
+	line-height: 1.7;
 	animation: heroRise 1s var(--ease-out) .36s both;
 }
 .plan-live-card {
 	width: min(690px, 100%);
-	margin: 38px auto 0;
+	margin: 32px auto 0;
 	padding: 21px 24px;
 	display: grid;
 	grid-template-columns: auto minmax(0, 1fr) auto;
@@ -190,11 +190,11 @@ body.plan-page { background: var(--bg); }
 .plan-noscript { margin-top: 100px; padding: 20px; border: 1px solid rgba(224, 90, 77, .35); color: var(--text-dim); text-align: center; }
 
 /* ---------- 通用区块 ---------- */
-.plan-section { position: relative; padding: 122px 0; }
+.plan-section { position: relative; padding: 104px 0; }
 .plan-section-alt { background: rgba(255, 255, 255, .012); }
-.plan-section-head { max-width: 780px; margin-bottom: 58px; }
+.plan-section-head { max-width: 780px; margin-bottom: 42px; }
 .plan-section-head h2 {
-	margin-top: 18px;
+	margin-top: 14px;
 	font-size: clamp(38px, 5.2vw, 68px);
 	font-weight: 800;
 	line-height: 1.16;
@@ -206,8 +206,8 @@ body.plan-page { background: var(--bg); }
 .plan-metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .plan-metric {
 	position: relative;
-	min-height: 270px;
-	padding: 28px;
+	min-height: 220px;
+	padding: 25px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
@@ -236,21 +236,58 @@ body.plan-page { background: var(--bg); }
 	letter-spacing: .17em;
 	color: var(--text-faint);
 }
-.plan-metric > p { color: var(--text-dim); font-size: 12px; font-weight: 700; letter-spacing: .05em; }
+.plan-metric > h3 { color: var(--text-dim); font-size: 12px; font-weight: 700; letter-spacing: .05em; }
 .plan-metric > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-top: 17px; }
 .plan-metric strong { font-family: var(--font-display); font-size: clamp(37px, 4.2vw, 58px); line-height: 1; color: var(--text); }
 .plan-metric-live strong { color: var(--leaf); }
 .plan-metric > div span { color: var(--text-dim); font-size: 12px; }
-.plan-metric small { margin-top: 15px; color: var(--text-faint); font-size: 10px; line-height: 1.7; }
 
 .plan-record-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .plan-record { min-width: 0; padding: 28px 30px; }
 .plan-record + .plan-record { border-left: 1px solid var(--line); }
-.plan-record > span { display: block; color: var(--text-faint); font-size: 10px; letter-spacing: .08em; }
+.plan-record > h3 { color: var(--text-faint); font-size: 10px; font-weight: 600; letter-spacing: .08em; }
 .plan-record strong { display: block; margin-top: 9px; font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 30px); color: var(--text); }
 .plan-record strong b { font: inherit; color: var(--gold); }
 .plan-record-peak strong { color: var(--gold); }
 .plan-record small { display: block; margin-top: 7px; color: var(--text-faint); font-size: 10px; }
+
+/* ---------- 运行趋势 ---------- */
+.plan-trends { margin-top: 76px; }
+.plan-trend-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.plan-trend-head h3 { margin-top: 9px; font-size: clamp(27px, 3.4vw, 42px); }
+#plan-chart-status { padding-bottom: 5px; color: var(--text-faint); font-size: 10px; letter-spacing: .08em; }
+.plan-chart-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.plan-chart-card {
+	--chart: var(--gold);
+	min-width: 0;
+	padding: 24px;
+	border: 1px solid var(--line);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, .018);
+	overflow: hidden;
+	transition: border-color .3s ease, transform .3s var(--ease-out);
+}
+.plan-chart-card:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+.plan-chart-memory { --chart: var(--aqua); }
+.plan-chart-players { --chart: var(--leaf); }
+.plan-chart-card > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.plan-chart-card h4 { font-size: 14px; letter-spacing: .04em; }
+.plan-chart-card header div small { display: block; margin-top: 5px; color: var(--text-faint); font-size: 9px; }
+.plan-chart-card header > strong { display: flex; align-items: baseline; gap: 5px; font-family: var(--font-display); color: var(--chart); }
+.plan-chart-card header > strong b { font: inherit; font-size: 30px; line-height: 1; }
+.plan-chart-card header > strong small { color: var(--text-faint); font-family: var(--font-body); font-size: 9px; font-weight: 700; }
+.plan-chart-plot { position: relative; margin-top: 27px; }
+.plan-chart-plot svg { display: block; width: 100%; aspect-ratio: 12 / 5; overflow: visible; transition: opacity .25s ease; }
+.plan-chart-gridlines line { stroke: rgba(244, 242, 230, .075); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.plan-chart-area { fill: var(--chart); opacity: .08; }
+.plan-chart-line { fill: none; stroke: var(--chart); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.plan-chart-point { fill: var(--chart); stroke: var(--bg-2); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.plan-chart-empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--text-faint); font-size: 10px; letter-spacing: .08em; }
+.plan-chart-empty[hidden] { display: none; }
+.plan-chart-card.is-empty svg { opacity: .15; }
+.plan-chart-card > footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 13px; color: var(--text-faint); font-size: 9px; }
+.plan-chart-card > footer span:nth-child(2) { letter-spacing: .14em; }
+.is-refreshing-performance .plan-chart-line, .is-refreshing-performance .plan-chart-point { opacity: .55; }
 
 /* ---------- 活跃时间窗 ---------- */
 .plan-activity-grid { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
@@ -287,62 +324,33 @@ body.plan-page { background: var(--bg); }
 }
 .plan-activity-card:nth-child(2) .plan-period b { color: var(--leaf); }
 .plan-activity-card:nth-child(3) .plan-period b { color: var(--aqua); }
-.plan-period span { font-size: 15px; font-weight: 800; }
+.plan-period h3 { font-size: 15px; font-weight: 800; }
 .plan-activity-card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 46px; }
 .plan-activity-card dl div { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255, 255, 255, .018); }
 .plan-activity-card dt { color: var(--text-faint); font-size: 10px; }
 .plan-activity-card dd { margin-top: 9px; font-family: var(--font-display); font-size: clamp(25px, 3vw, 38px); line-height: 1; color: var(--text); }
 .plan-activity-card dl div:last-child dd { color: var(--leaf); }
 
-/* ---------- 七日对照 ---------- */
-.plan-comparison { border: 1px solid var(--line); border-radius: 26px; background: rgba(255, 255, 255, .018); overflow: hidden; }
-.plan-comparison-periods {
-	display: grid;
-	grid-template-columns: 1fr auto 1fr;
-	align-items: center;
-	gap: 24px;
-	padding: 28px 36px;
-	border-bottom: 1px solid var(--line);
-	background: linear-gradient(100deg, rgba(245, 190, 79, .045), rgba(143, 221, 85, .035), rgba(94, 214, 196, .045));
-}
-.plan-comparison-periods span:last-child { text-align: right; }
-.plan-comparison-periods small { display: block; color: var(--text-faint); font-size: 9px; letter-spacing: .12em; }
-.plan-comparison-periods b { display: block; margin-top: 7px; font-family: var(--font-display); font-size: 12px; letter-spacing: .06em; }
-.plan-comparison-periods i { color: var(--leaf); font-family: var(--font-display); font-style: normal; }
-.plan-table-wrap { padding: 12px 30px 24px; }
-.plan-comparison table { width: 100%; border-collapse: collapse; }
-.plan-comparison th, .plan-comparison td { padding: 19px 10px; border-bottom: 1px solid var(--line); text-align: right; font-size: 12px; }
-.plan-comparison tbody tr:last-child th, .plan-comparison tbody tr:last-child td { border-bottom: 0; }
-.plan-comparison th:first-child { text-align: left; }
-.plan-comparison thead th { color: var(--text-faint); font-size: 9px; font-weight: 600; letter-spacing: .12em; }
-.plan-comparison tbody th { color: var(--text-dim); font-weight: 700; }
-.plan-comparison tbody td { font-family: var(--font-display); font-size: 11px; color: var(--text); }
-.plan-trend { display: inline-flex; justify-content: center; min-width: 74px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--text-dim); }
-.plan-trend[data-direction="up"] { border-color: rgba(143, 221, 85, .28); color: var(--leaf); background: rgba(143, 221, 85, .045); }
-.plan-trend[data-direction="down"] { border-color: rgba(94, 214, 196, .25); color: var(--aqua); background: rgba(94, 214, 196, .04); }
-
 .plan-data-note {
-	display: grid;
-	grid-template-columns: minmax(220px, .7fr) minmax(300px, 1.3fr) auto;
+	display: flex;
 	align-items: center;
-	gap: 36px;
-	margin-top: 28px;
-	padding: 30px 34px;
+	justify-content: space-between;
+	gap: 24px;
+	margin-top: 24px;
+	padding: 18px 22px;
 	border: 1px solid var(--line);
-	border-radius: 22px;
+	border-radius: 16px;
 }
-.plan-data-note h3 { margin-top: 7px; font-size: 22px; }
-.plan-data-note > p { color: var(--text-dim); font-size: 12px; line-height: 1.9; }
+.plan-data-note > p { color: var(--text-dim); font-size: 11px; }
 .plan-data-note > a { color: var(--aqua); font-size: 11px; font-weight: 700; white-space: nowrap; }
 .plan-data-note > a span { display: inline-block; margin-left: 4px; transition: transform .2s var(--ease-out); }
 .plan-data-note > a:hover span { transform: translate(2px, -2px); }
 
 /* ---------- 收束 ---------- */
-.plan-finale { position: relative; padding: 150px 0 132px; text-align: center; overflow: hidden; }
+.plan-finale { position: relative; padding: 112px 0 108px; text-align: center; overflow: hidden; }
 .plan-finale::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 72%, rgba(143, 221, 85, .1), transparent 44%); }
-.plan-finale h2 { margin-top: 22px; font-size: clamp(39px, 6.4vw, 82px); line-height: 1.1; }
-.plan-finale > .container > p:not(.kicker) { max-width: 650px; margin: 24px auto 0; color: var(--text-dim); line-height: 1.9; }
-.plan-finale-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 38px; }
+.plan-finale h2 { font-size: clamp(39px, 6.4vw, 76px); line-height: 1.1; }
+.plan-finale-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 32px; }
 
 /* ---------- 数据状态 ---------- */
 .is-loading [data-plan-key], .is-refreshing [data-plan-key] { opacity: .35; }
@@ -352,8 +360,6 @@ body.plan-page { background: var(--bg); }
 /* ---------- 响应式 ---------- */
 @media (max-width: 1120px) {
 	.plan-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-	.plan-data-note { grid-template-columns: 1fr 1.4fr; }
-	.plan-data-note > a { grid-column: 1 / -1; }
 }
 @media (max-width: 860px) {
 	.plan-hero-inner { padding-top: 104px; }
@@ -361,12 +367,12 @@ body.plan-page { background: var(--bg); }
 	.plan-section-head { margin-bottom: 46px; }
 	.plan-record-grid { grid-template-columns: 1fr; }
 	.plan-record + .plan-record { border-left: 0; border-top: 1px solid var(--line); }
+	.plan-chart-grid { grid-template-columns: 1fr; }
 	.plan-activity-grid { grid-template-columns: 1fr; }
 	.plan-activity-grid::before { left: 56px; right: auto; top: 42px; bottom: 42px; width: 1px; height: auto; }
 	.plan-activity-card { padding: 26px; }
 	.plan-activity-card dl { margin-top: 30px; }
-	.plan-data-note { grid-template-columns: 1fr; gap: 18px; }
-	.plan-data-note > a { grid-column: auto; }
+	.plan-data-note { align-items: flex-start; flex-direction: column; gap: 12px; }
 }
 @media (max-width: 600px) {
 	.plan-hero h1 { font-size: clamp(53px, 16vw, 82px); }
@@ -381,20 +387,11 @@ body.plan-page { background: var(--bg); }
 	.plan-status .plan-updated { grid-column: 1 / -1; grid-row: 2; }
 	.plan-refresh { grid-column: 2; grid-row: 1; }
 	.plan-metric-grid { grid-template-columns: 1fr; }
-	.plan-metric { min-height: 225px; }
+	.plan-metric { min-height: 190px; }
+	.plan-trends { margin-top: 62px; }
+	.plan-trend-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+	.plan-chart-card { padding: 20px; }
 	.plan-activity-card dl { grid-template-columns: 1fr 1fr; }
-	.plan-comparison-periods { gap: 12px; padding: 22px 18px; }
-	.plan-comparison-periods b { font-size: 9px; }
-	.plan-table-wrap { padding: 8px 18px 18px; }
-	.plan-comparison thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-	.plan-comparison table, .plan-comparison tbody { display: block; }
-	.plan-comparison tr { display: grid; grid-template-columns: 1fr 1fr; padding: 18px 0; border-bottom: 1px solid var(--line); }
-	.plan-comparison tbody tr:last-child { border-bottom: 0; }
-	.plan-comparison th, .plan-comparison td { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 6px; border-bottom: 0; text-align: right; }
-	.plan-comparison th:first-child { grid-column: 1 / -1; padding-bottom: 12px; color: var(--text); font-size: 14px; }
-	.plan-comparison td::before { content: attr(data-label); color: var(--text-faint); font-family: var(--font-body); font-size: 9px; }
-	.plan-comparison td:last-child { grid-column: 1 / -1; }
-	.plan-trend { min-width: 68px; }
 	.plan-data-note { padding: 26px 22px; }
 	.plan-finale { padding: 112px 0 105px; }
 }

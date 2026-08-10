@@ -77,6 +77,15 @@ jobs:
             -o StrictHostKeyChecking=yes
           )
           target="$DEPLOY_USER@$DEPLOY_HOST"
+          curl_options=(
+            --fail
+            --silent
+            --show-error
+            --insecure
+            --connect-timeout 5
+            --max-time 45
+            --resolve "ellan.site:443:$DEPLOY_HOST"
+          )
           local_checksum="$(sha256sum website/index.html | awk '{print $1}')"
           remote_checksum="$(ssh "${ssh_options[@]}" "$target" "sha256sum '$DEPLOY_PATH/index.html'" | awk '{print $1}')"
           printf 'Local index.html SHA-256: %s\n' "$local_checksum"
@@ -84,26 +93,26 @@ jobs:
           ssh "${ssh_options[@]}" "$target" "stat --format='Remote index.html: size=%s modified=%y' '$DEPLOY_PATH/index.html'"
           test "$local_checksum" = "$remote_checksum"
 
-          served_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/' | sha256sum | awk '{print $1}')"
+          served_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/' | sha256sum | awk '{print $1}')"
           printf 'Nginx response SHA-256: %s\n' "$served_checksum"
           ssh "${ssh_options[@]}" "$target" "find /www/wwwroot -type f -name index.html -exec sha256sum {} + | grep -F '$served_checksum' || true"
           test "$local_checksum" = "$served_checksum"
 
           local_plan_checksum="$(sha256sum website/plan.html | awk '{print $1}')"
-          served_plan_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/plan.html' | sha256sum | awk '{print $1}')"
+          served_plan_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/plan.html' | sha256sum | awk '{print $1}')"
           printf 'Local plan.html SHA-256: %s\n' "$local_plan_checksum"
           printf 'Nginx plan.html SHA-256: %s\n' "$served_plan_checksum"
           test "$local_plan_checksum" = "$served_plan_checksum"
 
           local_gameplay_checksum="$(sha256sum website/gameplay.html | awk '{print $1}')"
-          served_gameplay_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/gameplay.html' | sha256sum | awk '{print $1}')"
+          served_gameplay_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/gameplay.html' | sha256sum | awk '{print $1}')"
           printf 'Local gameplay.html SHA-256: %s\n' "$local_gameplay_checksum"
           printf 'Nginx gameplay.html SHA-256: %s\n' "$served_gameplay_checksum"
           test "$local_gameplay_checksum" = "$served_gameplay_checksum"
 
           for seo_file in robots.txt sitemap.xml llms.txt; do
             local_seo_checksum="$(sha256sum "website/$seo_file" | awk '{print $1}')"
-            served_seo_checksum="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" "https://ellan.site/$seo_file" | sha256sum | awk '{print $1}')"
+            served_seo_checksum="$(curl "${curl_options[@]}" "https://ellan.site/$seo_file" | sha256sum | awk '{print $1}')"
             printf 'Local %s SHA-256: %s\n' "$seo_file" "$local_seo_checksum"
             printf 'Nginx %s SHA-256: %s\n' "$seo_file" "$served_seo_checksum"
             test "$local_seo_checksum" = "$served_seo_checksum"
@@ -123,9 +132,9 @@ jobs:
             ssh "${ssh_options[@]}" "$target" "grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' '$DEPLOY_PATH/$noindex_page' > /dev/null"
           done
 
-          curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/css/plan.css' > /dev/null
-          curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" 'https://ellan.site/js/plan.js' > /dev/null
-          plan_content_type="$(curl --fail --silent --show-error --insecure --resolve "ellan.site:443:$DEPLOY_HOST" --dump-header "$RUNNER_TEMP/plan-network.headers" -o "$RUNNER_TEMP/plan-network.json" -w '%{content_type}' 'https://ellan.site/api/plan-network.php')"
+          curl "${curl_options[@]}" 'https://ellan.site/css/plan.css' > /dev/null
+          curl "${curl_options[@]}" 'https://ellan.site/js/plan.js' > /dev/null
+          plan_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/plan-network.headers" -o "$RUNNER_TEMP/plan-network.json" -w '%{content_type}' 'https://ellan.site/api/plan-network.php')"
           case "$plan_content_type" in
             application/json*) ;;
             *) printf 'Unexpected PLAN API content type: %s\n' "$plan_content_type" >&2; exit 1 ;;
@@ -154,3 +163,50 @@ jobs:
               "sessions_before", "sessions_after"
             ]))
           ' "$RUNNER_TEMP/plan-network.json" > /dev/null
+
+          performance_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/plan-performance.headers" -o "$RUNNER_TEMP/plan-performance.json" -w '%{content_type}' 'https://ellan.site/api/plan-performance.php')"
+          case "$performance_content_type" in
+            application/json*) ;;
+            *) printf 'Unexpected PLAN performance API content type: %s\n' "$performance_content_type" >&2; exit 1 ;;
+          esac
+          grep -i -F 'x-robots-tag: noindex, nofollow' "$RUNNER_TEMP/plan-performance.headers" > /dev/null
+          jq -e '
+            def sampled_series($minimum; $maximum):
+              . as $series |
+              (type == "array") and
+              (length == 145) and
+              all(range(0; ($series | length));
+                ($series[.] | type == "array") and
+                ($series[.] | length == 2) and
+                ($series[.][0] | type == "number") and
+                ($series[.][1] == null or (
+                  ($series[.][1] | type == "number") and
+                  ($series[.][1] >= $minimum) and
+                  ($series[.][1] <= $maximum)
+                ))
+              ) and
+              all(range(1; ($series | length));
+                ($series[.][0] - $series[. - 1][0]) == 600000
+              ) and
+              (($series[0][0] % 600000) == 0) and
+              (($series[-1][0] - $series[0][0]) == 86400000) and
+              ([$series[][1] | select(. != null)] | length >= 2);
+            . as $payload |
+            (.timestamp | type == "number") and
+            (.window_ms == 86400000) and
+            (.bucket_ms == 600000) and
+            (.refresh_seconds == 300) and
+            ((.current | keys | sort) == ["memory_mb", "players", "tps"]) and
+            all(.current[]; type == "number") and
+            (.current.tps >= 0 and .current.tps <= 21) and
+            (.current.memory_mb >= 0 and .current.memory_mb <= 1000000) and
+            (.current.players >= 0 and .current.players <= 1000000) and
+            ((.series | keys | sort) == ["memory", "players", "tps"]) and
+            (.series.tps | sampled_series(0; 21)) and
+            (.series.memory | sampled_series(0; 1000000)) and
+            (.series.players | sampled_series(0; 1000000)) and
+            all(range(0; ($payload.series.tps | length));
+              ($payload.series.tps[.][0] == $payload.series.memory[.][0]) and
+              ($payload.series.tps[.][0] == $payload.series.players[.][0])
+            )
+          ' "$RUNNER_TEMP/plan-performance.json" > /dev/null
