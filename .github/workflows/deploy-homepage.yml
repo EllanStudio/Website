@@ -141,16 +141,15 @@ jobs:
             ssh "${ssh_options[@]}" "$target" "grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' '$DEPLOY_PATH/$noindex_page' > /dev/null"
           done
 
-          curl "${curl_options[@]}" 'https://ellan.site/css/plan.css' > /dev/null
-          curl "${curl_options[@]}" 'https://ellan.site/js/plan.js' > /dev/null
-          for asset in css/plan.css js/plan.js; do
+          for asset in 'css/plan.css?v=20260810-plan-telemetry-v3' 'js/plan.js?v=20260810-plan-telemetry-v3'; do
+            asset_path="${asset%%\?*}"
             asset_name="$(printf '%s' "$asset" | tr '/' '-')"
             asset_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/$asset_name.headers" -o "$RUNNER_TEMP/$asset_name.body" -w '%{content_type}' "https://ellan.site/$asset")"
             case "$asset_content_type" in
               text/css*|application/javascript*|text/javascript*) ;;
               *) printf 'Unexpected content type for %s: %s\n' "$asset" "$asset_content_type" >&2; exit 1 ;;
             esac
-            local_asset_checksum="$(sha256sum "website/$asset" | awk '{print $1}')"
+            local_asset_checksum="$(sha256sum "website/$asset_path" | awk '{print $1}')"
             served_asset_checksum="$(sha256sum "$RUNNER_TEMP/$asset_name.body" | awk '{print $1}')"
             printf 'Local %s SHA-256: %s\n' "$asset" "$local_asset_checksum"
             printf 'Nginx %s SHA-256: %s\n' "$asset" "$served_asset_checksum"
