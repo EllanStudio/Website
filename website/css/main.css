@@ -691,6 +691,42 @@ h1, h2, h3, .kicker, .btn {
 	white-space: nowrap;
 }
 
+/* 冒险服专题入口：延续官网品牌色，以黄铜和余烬建立独立叙事感。 */
+.thirteen-entry {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: end;
+	gap: 30px;
+	min-height: 300px;
+	margin-top: 18px;
+	padding: 48px 42px;
+	border: 1px solid rgba(240, 211, 141, 0.32);
+	border-radius: 8px;
+	background:
+		linear-gradient(90deg, rgba(9, 9, 8, 0.94), rgba(9, 9, 8, 0.7) 56%, rgba(9, 9, 8, 0.14)),
+		url("../img/thirteen-bells-hero.webp") center 52% / cover no-repeat;
+	overflow: hidden;
+	transition: transform 0.28s var(--ease-out), border-color 0.22s ease;
+}
+.thirteen-entry::after {
+	content: "XIII";
+	position: absolute;
+	right: 28px;
+	top: 5px;
+	color: rgba(240, 211, 141, 0.14);
+	font-family: var(--font-serif);
+	font-size: 112px;
+	line-height: 1;
+	pointer-events: none;
+}
+.thirteen-entry:hover { transform: translateY(-3px); border-color: rgba(240, 211, 141, 0.62); }
+.thirteen-entry-copy { position: relative; z-index: 1; display: flex; max-width: 680px; flex-direction: column; align-items: flex-start; }
+.thirteen-entry-copy .kicker { color: #f0d38d; }
+.thirteen-entry-copy strong { margin-top: 10px; font-family: var(--font-serif); font-size: 38px; font-weight: 400; }
+.thirteen-entry-copy small { margin-top: 10px; color: rgba(244, 242, 230, 0.75); font-size: 13px; line-height: 1.9; }
+.thirteen-entry-action { position: relative; z-index: 1; padding: 11px 18px; border: 1px solid rgba(240, 211, 141, 0.55); color: #f0d38d; font-size: 12px; font-weight: 700; white-space: nowrap; }
+
 /* ---------- 大陆图鉴 ---------- */
 .world-grid {
 	display: grid;
@@ -1253,6 +1289,9 @@ footer { border-top: 1px solid var(--line); }
 	.utility-strip span:nth-child(n + 3) { border-top: 1px solid var(--line); }
 	.playbook-entry { grid-template-columns: 1fr; gap: 20px; padding: 26px 24px 26px 28px; }
 	.playbook-entry-action { justify-self: start; }
+	.thirteen-entry { grid-template-columns: 1fr; min-height: 340px; padding: 34px 26px; align-content: end; }
+	.thirteen-entry-action { justify-self: start; }
+	.thirteen-entry-copy strong { font-size: 30px; }
 	.showcase-category-grid { grid-template-columns: 1fr; gap: 16px; }
 	.showcase-category-card > span { left: 17px; right: 17px; bottom: 15px; }
 	.showcase-lightbox { padding: 10px; }

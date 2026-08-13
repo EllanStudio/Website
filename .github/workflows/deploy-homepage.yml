@@ -119,6 +119,19 @@ jobs:
           printf 'Nginx gameplay.html SHA-256: %s\n' "$served_gameplay_checksum"
           test "$local_gameplay_checksum" = "$served_gameplay_checksum"
 
+          local_thirteen_checksum="$(sha256sum website/thirteen-bells.html | awk '{print $1}')"
+          served_thirteen_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/thirteen-bells.html' | sha256sum | awk '{print $1}')"
+          printf 'Local thirteen-bells.html SHA-256: %s\n' "$local_thirteen_checksum"
+          printf 'Nginx thirteen-bells.html SHA-256: %s\n' "$served_thirteen_checksum"
+          test "$local_thirteen_checksum" = "$served_thirteen_checksum"
+
+          for asset in 'css/thirteen-bells.css?v=20260813-v1' 'js/thirteen-bells.js?v=20260813-v1'; do
+            asset_path="${asset%%\?*}"
+            asset_name="$(printf '%s' "$asset" | tr '/' '-')"
+            curl "${curl_options[@]}" -o "$RUNNER_TEMP/$asset_name.body" "https://ellan.site/$asset"
+            test "$(sha256sum "website/$asset_path" | awk '{print $1}')" = "$(sha256sum "$RUNNER_TEMP/$asset_name.body" | awk '{print $1}')"
+          done
+
           for seo_file in robots.txt sitemap.xml llms.txt; do
             local_seo_checksum="$(sha256sum "website/$seo_file" | awk '{print $1}')"
             served_seo_checksum="$(curl "${curl_options[@]}" "https://ellan.site/$seo_file" | sha256sum | awk '{print $1}')"

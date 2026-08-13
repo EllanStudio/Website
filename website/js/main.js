@@ -29,6 +29,7 @@
 	function pageKind(pathname) {
 		if (/\/gameplay\.html$/i.test(pathname)) return 'gameplay';
 		if (/\/plan\.html$/i.test(pathname)) return 'plan';
+		if (/\/thirteen-bells\.html$/i.test(pathname)) return 'thirteen-bells';
 		if (/\/(?:index\.html)?$/i.test(pathname)) return 'home';
 		return '';
 	}
