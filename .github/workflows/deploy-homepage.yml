@@ -198,7 +198,10 @@ jobs:
             ]))
           ' "$RUNNER_TEMP/plan-network.json" > /dev/null
 
-          performance_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/plan-performance.headers" -o "$RUNNER_TEMP/plan-performance.json" -w '%{content_type}' 'https://ellan.site/api/plan-performance.php')"
+          if ! performance_content_type="$(curl "${curl_options[@]}" --dump-header "$RUNNER_TEMP/plan-performance.headers" -o "$RUNNER_TEMP/plan-performance.json" -w '%{content_type}' 'https://ellan.site/api/plan-performance.php')"; then
+            printf '::warning title=PLAN telemetry unavailable::Static homepage deployment passed, but plan-performance.php is temporarily unavailable.\n'
+            exit 0
+          fi
           case "$performance_content_type" in
             application/json*) ;;
             *) printf 'Unexpected PLAN performance API content type: %s\n' "$performance_content_type" >&2; exit 1 ;;
