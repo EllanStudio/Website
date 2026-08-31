@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'website/**'
+      - 'tests/**'
       - '.github/workflows/deploy-homepage.yml'
   workflow_dispatch:
 
@@ -30,6 +31,13 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
+
+      - name: Test status and telemetry compatibility
+        run: |
+          node --test tests/server-status.test.mjs
+          php -l website/api/plan-network.php
+          php -l website/api/plan-performance.php
+          php tests/plan-performance.test.php
 
       - name: Configure SSH
         shell: bash

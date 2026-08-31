@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-const PLAN_OVERVIEW_URL = 'http://43.249.195.103:16884/v1/network/overview';
+const PLAN_OVERVIEW_URL = 'http://t40.sjcmc.cn:36040/v1/network/overview';
 const MAX_RESPONSE_BYTES = 131072;
 const MIN_TIMESTAMP_MS = 1577836800000;
 const MAX_COUNT = 1000000000;

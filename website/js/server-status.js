@@ -2,9 +2,12 @@
 (function () {
 	'use strict';
 
-	var API_URL = 'https://api.mcsrvstat.us/2/ellan.top';
+	// 查询入口独立于玩家连接地址，使用迁移后的服务商域名跟随入口 IP 变化。
+	var API_URL = 'https://api.mcsrvstat.us/3/t40.sjcmc.cn:14803';
 	var REFRESH_MS = 60000;
+	var TIMEOUT_MS = 10000;
 	var MAX_HEADS = 10;
+	var fetching = false;
 
 	var icon = document.getElementById('server-icon');
 	var motd = document.getElementById('server-motd');
@@ -120,7 +123,7 @@
 		if (heroOnline) {
 			heroOnline.textContent = state === 'online'
 				? (typeof online === 'number' ? online + ' 人在线' : '服务器在线')
-				: (state === 'offline' ? '服务器离线' : '连接失败');
+				: (state === 'offline' ? '暂未连通' : '状态暂不可用');
 		}
 		if (!navLive || !navLiveLabel) return;
 		navLive.classList.remove('is-online', 'is-offline');
@@ -129,48 +132,66 @@
 			navLiveLabel.textContent = typeof online === 'number' ? online + ' 人在线' : '服务器在线';
 		} else if (state === 'offline') {
 			navLive.classList.add('is-offline');
-			navLiveLabel.textContent = '服务器离线';
+			navLiveLabel.textContent = '暂未连通';
 		} else {
-			navLiveLabel.textContent = '连接失败';
+			navLiveLabel.textContent = '状态暂不可用';
 		}
 	}
 
+	function clearStatus() {
+		players.textContent = '– / –';
+		players.setAttribute('data-count', '0');
+		if (ping) ping.textContent = '';
+		if (strip) {
+			strip.textContent = '';
+			strip.hidden = true;
+		}
+		icon.src = 'img/icon.png';
+	}
+
 	async function fetchServerStatus() {
-		if (document.hidden) return;
+		if (document.hidden || fetching) return;
+		fetching = true;
+		var controller = new AbortController();
+		var timeout = setTimeout(function () { controller.abort(); }, TIMEOUT_MS);
 		var started = performance.now();
 		try {
-			var res = await fetch(API_URL);
+			var res = await fetch(API_URL, { signal: controller.signal });
+			if (!res.ok) throw new Error('Status HTTP ' + res.status);
 			var data = await res.json();
+			if (!data || typeof data.online !== 'boolean') throw new Error('Invalid server status');
 			var rtt = Math.round(performance.now() - started);
 
 			if (data.online) {
+				if (!data.players || !Number.isInteger(data.players.online) || data.players.online < 0) {
+					throw new Error('Invalid player count');
+				}
 				renderMotd(data);
 				version.textContent = 'JAVA ' + (data.version || '未知');
-				var online = data.players && typeof data.players.online === 'number' ? data.players.online : 0;
+				var online = data.players.online;
 				var max = data.players && data.players.max ? data.players.max : '–';
 				tweenPlayers(online, max);
 				if (ping) {
-					var ms = data.debug && data.debug.ping ? Math.round(data.debug.ping) : rtt;
-					ping.textContent = '延迟 ≈' + ms + 'ms';
+					// API 的 debug.ping 是布尔值，请求耗时不是玩家的游戏延迟。
+					ping.textContent = '查询耗时 ' + rtt + 'ms';
 				}
 				renderHeads(data.players && data.players.list, online);
-				if (data.icon) icon.src = data.icon;
+				icon.src = data.icon || 'img/icon.png';
 				setNavLive('online', online);
 			} else {
-				motd.textContent = '服务器当前离线,维护或重启中';
-				version.textContent = 'OFFLINE';
-				players.textContent = '– / –';
-				if (ping) ping.textContent = '';
-				if (strip) strip.hidden = true;
-				icon.src = 'img/icon.png';
+				clearStatus();
+				motd.textContent = '状态查询节点暂未连通服务器，可在游戏内尝试连接';
+				version.textContent = '';
 				setNavLive('offline');
 			}
 		} catch (err) {
+			clearStatus();
 			motd.textContent = '状态获取失败,' + Math.round(REFRESH_MS / 1000) + ' 秒后自动重试';
 			version.textContent = '';
-			if (ping) ping.textContent = '';
-			icon.src = 'img/icon.png';
 			setNavLive('error');
+		} finally {
+			clearTimeout(timeout);
+			fetching = false;
 		}
 	}
 

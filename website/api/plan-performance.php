@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-const PLAN_BASE_URL = 'http://43.249.195.103:16884';
+const PLAN_BASE_URL = 'http://t40.sjcmc.cn:36040';
 const PLAN_NODES = [
     'redstone' => [
         'label' => '红石服',
@@ -58,7 +58,7 @@ const MAX_PERFORMANCE_BYTES = 4718592;
 const MAX_GRAPH_BYTES = 1572864;
 const MAX_UPSTREAM_TOTAL_BYTES = 20971520;
 const MAX_CACHE_BYTES = 4194304;
-const MAX_KEYS = 10;
+const MAX_KEYS = 32;
 const MAX_ROWS = 45000;
 const MAX_GRAPHS = 8;
 const MAX_POINTS_PER_GRAPH = 45000;
@@ -154,15 +154,16 @@ function performanceData(string $json, array $ranges, int $now): ?array
         || !isset($payload['keys'], $payload['values'])
         || !is_array($payload['keys'])
         || !is_array($payload['values'])
-        || count($payload['keys']) !== count(PERFORMANCE_METRICS) + 1
+        || count($payload['keys']) < count(PERFORMANCE_METRICS) + 1
         || count($payload['keys']) > MAX_KEYS
         || count($payload['values']) < 2
         || count($payload['values']) > MAX_ROWS) {
         return null;
     }
 
+    // Plan can add metrics; require known columns and ignore bounded extra columns.
     foreach ($payload['keys'] as $key) {
-        if (!is_string($key) || $key === '') {
+        if (!is_string($key) || $key === '' || strlen($key) > 64) {
             return null;
         }
     }
