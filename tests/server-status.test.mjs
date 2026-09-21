@@ -22,7 +22,7 @@ function element() {
   };
 }
 
-function harness(responder) {
+function harness(responder, navOnly = false) {
   const elements = new Map();
   const calls = [];
   const events = {};
@@ -33,6 +33,7 @@ function harness(responder) {
     hidden: false,
     documentElement: { classList: { contains: () => true } },
     getElementById(id) {
+      if (navOnly && !['nav-live', 'nav-live-label'].includes(id)) return null;
       if (!elements.has(id)) elements.set(id, element());
       return elements.get(id);
     },
@@ -59,6 +60,15 @@ const online = {
 };
 const response = (data, status = 200) => Promise.resolve({
   ok: status >= 200 && status < 300, status, json: async () => data
+});
+
+test('handbook header works without homepage status card on online, offline and error states', async () => {
+  for (const [data, status, expected] of [[online, 200, '21 人在线'], [{online:false}, 200, '暂未连通'], [{}, 503, '状态暂不可用']]) {
+    const app = harness(() => response(data, status), true);
+    await settle();
+    assert.equal(app.elements.get('nav-live-label').textContent, expected);
+    assert.equal(app.calls.length, 1);
+  }
 });
 
 test('queries the migrated entry and does not render a boolean ping as 1ms', async () => {

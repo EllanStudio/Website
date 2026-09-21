@@ -34,7 +34,7 @@ jobs:
 
       - name: Test status and telemetry compatibility
         run: |
-          node --test tests/server-status.test.mjs
+          node --test tests/server-status.test.mjs tests/wiki-content.test.mjs tests/wiki-editor.test.mjs
           php -l website/api/plan-network.php
           php -l website/api/plan-performance.php
           php tests/plan-performance.test.php
@@ -138,6 +138,13 @@ jobs:
             asset_name="$(printf '%s' "$asset" | tr '/' '-')"
             curl "${curl_options[@]}" -o "$RUNNER_TEMP/$asset_name.body" "https://ellan.site/$asset"
             test "$(sha256sum "website/$asset_path" | awk '{print $1}')" = "$(sha256sum "$RUNNER_TEMP/$asset_name.body" | awk '{print $1}')"
+          done
+
+          for wiki_file in wiki.html css/wiki.css js/wiki.js js/wiki-data.js js/server-status.js js/vendor/lucide.min.js; do
+            local_wiki_checksum="$(sha256sum "website/$wiki_file" | awk '{print $1}')"
+            served_wiki_checksum="$(curl "${curl_options[@]}" "https://ellan.site/$wiki_file?v=$GITHUB_SHA" | sha256sum | awk '{print $1}')"
+            printf 'Verify handbook %s: %s\n' "$wiki_file" "$served_wiki_checksum"
+            test "$local_wiki_checksum" = "$served_wiki_checksum"
           done
 
           for seo_file in robots.txt sitemap.xml llms.txt; do

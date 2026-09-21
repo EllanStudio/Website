@@ -19,7 +19,7 @@
 	var navLiveLabel = document.getElementById('nav-live-label');
 	var heroOnline = document.getElementById('hero-online');
 
-	if (!icon || !motd) return;
+	if (!motd && !navLive) return;
 
 	/* 只保留文本、换行与 span 颜色/加粗,其余标签解包 */
 	function appendSanitizedMotd(node, target) {
@@ -49,6 +49,7 @@
 	}
 
 	function renderMotd(data) {
+		if (!motd) return;
 		motd.textContent = '';
 		if (data.motd && Array.isArray(data.motd.html) && data.motd.html.length) {
 			var frag = document.createDocumentFragment();
@@ -67,6 +68,7 @@
 	}
 
 	function tweenPlayers(target, max) {
+		if (!players) return;
 		var from = parseInt(players.getAttribute('data-count') || '0', 10) || 0;
 		players.setAttribute('data-count', String(target));
 		// QA 截图模式(?shot=1)下无头浏览器只会绘制极少的 rAF 帧,直接落终值
@@ -139,14 +141,16 @@
 	}
 
 	function clearStatus() {
-		players.textContent = '– / –';
-		players.setAttribute('data-count', '0');
+		if (players) {
+			players.textContent = '– / –';
+			players.setAttribute('data-count', '0');
+		}
 		if (ping) ping.textContent = '';
 		if (strip) {
 			strip.textContent = '';
 			strip.hidden = true;
 		}
-		icon.src = 'img/icon.png';
+		if (icon) icon.src = 'img/icon.png';
 	}
 
 	async function fetchServerStatus() {
@@ -167,7 +171,7 @@
 					throw new Error('Invalid player count');
 				}
 				renderMotd(data);
-				version.textContent = 'JAVA ' + (data.version || '未知');
+				if (version) version.textContent = 'JAVA ' + (data.version || '未知');
 				var online = data.players.online;
 				var max = data.players && data.players.max ? data.players.max : '–';
 				tweenPlayers(online, max);
@@ -176,18 +180,18 @@
 					ping.textContent = '查询耗时 ' + rtt + 'ms';
 				}
 				renderHeads(data.players && data.players.list, online);
-				icon.src = data.icon || 'img/icon.png';
+				if (icon) icon.src = data.icon || 'img/icon.png';
 				setNavLive('online', online);
 			} else {
 				clearStatus();
-				motd.textContent = '状态查询节点暂未连通服务器，可在游戏内尝试连接';
-				version.textContent = '';
+				if (motd) motd.textContent = '状态查询节点暂未连通服务器，可在游戏内尝试连接';
+				if (version) version.textContent = '';
 				setNavLive('offline');
 			}
 		} catch (err) {
 			clearStatus();
-			motd.textContent = '状态获取失败,' + Math.round(REFRESH_MS / 1000) + ' 秒后自动重试';
-			version.textContent = '';
+			if (motd) motd.textContent = '状态获取失败,' + Math.round(REFRESH_MS / 1000) + ' 秒后自动重试';
+			if (version) version.textContent = '';
 			setNavLive('error');
 		} finally {
 			clearTimeout(timeout);

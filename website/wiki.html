@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新手旅行手册 · 艾尔岚</title>
+  <meta name="description" content="艾尔岚玩家旅行手册：第一天如何出发、安家和赚钱。农耕、钓鱼、烹饪、酿酒与家具的分步教程。">
+  <link rel="canonical" href="https://ellan.site/wiki.html">
+  <meta property="og:title" content="新手旅行手册 · 艾尔岚">
+  <meta property="og:description" content="找到你想做的事，从第一步开始。">
+  <meta property="og:image" content="https://ellan.site/img/city-fifth-overview-day-hd.webp">
+  <meta property="og:url" content="https://ellan.site/wiki.html">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="img/icon.png">
+  <link rel="stylesheet" href="css/main.css?v=20260802-copy-fix">
+  <link rel="stylesheet" href="css/wiki.css?v=20260921-handbook">
+  <script defer src="js/main.js?v=20260921-handbook"></script>
+  <script defer src="js/vendor/lucide.min.js"></script>
+  <script defer src="js/wiki-data.js?v=20260921-handbook"></script>
+  <script defer src="js/wiki.js?v=20260921-handbook"></script>
+  <script defer src="js/server-status.js?v=20260921-nav"></script>
+  <script defer src="js/liquid-glass.js?v=20260801-liquid-glass-v5"></script>
+</head>
+<body class="wiki-page" data-fixed-nav-section="wiki" data-wiki-view="home">
+  <a class="skip-link" href="#wiki-content">跳到主要内容</a>
+  <header id="site-header">
+    <nav class="nav container" aria-label="主导航">
+      <a class="nav-brand" href="index.html" aria-label="返回艾尔岚首页"><img src="img/icon.png" alt="艾尔岚 Logo" width="34" height="34"><span class="nav-brand-copy"><strong>ELLAN.TOP</strong></span></a>
+      <div class="nav-links">
+        <a href="index.html#top" class="nav-link" data-scroll-section="top">首页</a>
+        <a href="index.html#features" class="nav-link" data-scroll-section="features">核心玩法</a>
+        <a href="index.html#intro" class="nav-link" data-scroll-section="intro">大陆图鉴</a>
+        <a href="index.html#team" class="nav-link" data-scroll-section="team">运营团队</a>
+        <a href="wiki.html" class="nav-link active" data-scroll-section="wiki" aria-current="page">新手旅行手册</a>
+        <a href="thirteen-bells.html" class="nav-link" data-scroll-section="thirteen-bells">十三钟</a>
+        <a href="plan.html" class="nav-link" data-scroll-section="plan">大陆数据</a>
+      </div>
+      <div class="nav-actions"><span class="nav-live" id="nav-live"><i></i><b id="nav-live-label">连接中</b></span><a class="btn btn-ghost btn-sm" href="links/index.html" target="_blank" rel="noopener noreferrer"><span>在线游玩</span></a></div>
+    </nav>
+  </header>
+  <section class="manual-cover" aria-labelledby="manual-title">
+    <img src="img/hero-world-hd.webp" alt="艾尔岚主城与海岸夜景" fetchpriority="high" width="1920" height="1080">
+    <div class="cover-copy"><p class="manual-eyebrow">从第一天开始，找到你的生活</p><h1 id="manual-title">艾尔岚<span>旅行手册</span></h1><p>出发、安家、赚到第一笔金币。</p><div class="cover-actions"><a class="btn btn-rune" href="#guide-first-login">第一次来，从这里开始 <i data-lucide="arrow-right" aria-hidden="true"></i></a><a class="btn btn-ghost" href="#commands">查找常用命令</a></div></div>
+  </section>
+  <div class="handbook-shell">
+    <aside class="handbook-sidebar" aria-label="手册导航">
+      <a href="#home" class="handbook-brand"><i data-lucide="book-open" aria-hidden="true"></i><span>旅行手册<small>ELLAN FIELD NOTES</small></span></a>
+      <button type="button" class="handbook-menu-toggle" aria-expanded="false" aria-controls="handbook-navigation"><i data-lucide="menu" aria-hidden="true"></i>教程目录</button>
+      <nav id="handbook-navigation" aria-label="教程分类"></nav>
+      <div class="sidebar-bottom"><span class="server-address">ellan.top</span><p>慢慢探索，慢慢安家。</p><a href="#guide-faq">遇到问题？<i data-lucide="arrow-up-right" aria-hidden="true"></i></a></div>
+    </aside>
+    <div class="handbook-workspace">
+      <div class="handbook-toolbar">
+        <span id="wiki-breadcrumb">旅行手册 / 首页</span>
+        <form id="wiki-search-form" role="search">
+          <i data-lucide="search" aria-hidden="true"></i><label for="wiki-search" class="visually-hidden">搜索玩法、商店或问题</label>
+          <input id="wiki-search" type="search" autocomplete="off" placeholder="想找什么？种地、赚钱、配方…">
+          <button type="button" id="wiki-search-clear" title="清除搜索" aria-label="清除搜索" hidden><i data-lucide="x" aria-hidden="true"></i></button>
+        </form>
+      </div>
+      <main id="wiki-content" tabindex="-1"><noscript><h1>艾尔岚旅行手册</h1><p>请启用 JavaScript 以浏览分步教程和搜索内容。也可以先阅读<a href="gameplay.html">玩法百科</a>。</p></noscript></main>
+      <footer class="handbook-footer"><span>ELLAN · 艾尔岚工作室</span><a href="index.html">返回官网 ↗</a><p>玩家社区服务器，与 Mojang 或 Microsoft 无隶属关系。</p></footer>
+    </div>
+  </div>
+  <div id="wiki-announcement" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+  <div id="wiki-toast" role="status"></div>
+</body>
+</html>
