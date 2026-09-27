@@ -166,7 +166,7 @@
 				<div class="hero-actions">
 					<button class="btn btn-rune btn-copy" type="button" onclick="copyServerIP()">复制 IP <strong>ellan.top</strong></button>
 					<a class="btn btn-ghost" href="#features"><span>查看核心玩法</span></a>
-					<button class="hero-text-action" type="button" onclick="showDownloadOptions()">下载客户端</button>
+					<a class="hero-text-action" href="https://share.feijipan.com/s/sxvdM3Pc" target="_blank" rel="noopener noreferrer">下载客户端</a>
 				</div>
 			</div>
 			<div class="scroll-hint" aria-hidden="true"><span>向下浏览</span><i></i></div>
@@ -414,16 +414,6 @@
 				<button id="showcase-next" class="btn btn-ghost btn-sm" type="button">下一张</button>
 			</footer>
 		</section>
-	</div>
-
-	<div id="client-download-popup" class="modal" hidden>
-		<div class="modal-backdrop" onclick="closePopup()"></div>
-		<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="download-title">
-			<p class="kicker">客户端下载</p>
-			<h3 id="download-title">下载整合包</h3>
-			<p>整合包(.mrpack)仅包含模组与配置，不含游戏本体;需使用正版账号与支持该格式的启动器(如 Modrinth App、Prism Launcher)导入。</p>
-			<div class="modal-buttons"><button class="btn btn-rune" onclick="window.open('files/ellan.mrpack')">整合包 (.mrpack)</button><button class="btn btn-ghost" onclick="window.open('files/tau-ellan.pkg')">Linux / Mac</button><button class="btn btn-quiet" onclick="closePopup()">取消</button></div>
-		</div>
 	</div>
 
 	<div id="toast-root" aria-live="polite"></div>

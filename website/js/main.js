@@ -237,20 +237,6 @@
 		});
 	};
 
-	/* ===== 下载客户端模态框 ===== */
-	var modal = document.getElementById('client-download-popup');
-	window.showDownloadOptions = function () {
-		modal.hidden = false;
-		document.body.style.overflow = 'hidden';
-	};
-	window.closePopup = function () {
-		modal.hidden = true;
-		document.body.style.overflow = '';
-	};
-	document.addEventListener('keydown', function (e) {
-		if (e.key === 'Escape' && modal && !modal.hidden) window.closePopup();
-	});
-
 	/* ===== 扫码加群弹出层 ===== */
 	var qrToggle = document.getElementById('qr-toggle');
 	var qrPopover = document.getElementById('qr-popover');
