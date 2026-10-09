@@ -1193,6 +1193,8 @@ footer { border-top: 1px solid var(--line); }
 }
 .footer-inner span { color: var(--text-faint); font-size: 11px; }
 .footer-inner .btn { margin-top: 8px; }
+.footer-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+.footer-actions .btn { margin-top: 0; }
 .footer-legal {
 	max-width: 620px;
 	margin-top: 16px;
