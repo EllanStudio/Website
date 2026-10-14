@@ -75,11 +75,25 @@ jobs:
           state_dir="$(dirname "$DEPLOY_PATH")/.deploy-state-homepage-1.3"
           manifest="$state_dir/manifest.sha256"
 
+          # The link to the site host drops connections often; retry instead of
+          # failing the whole deploy on a single reset.
+          remote() {
+            local attempt
+            for attempt in 1 2 3 4; do
+              if ssh "${ssh_options[@]}" "$target" "$@"; then
+                return 0
+              fi
+              printf 'ssh attempt %s failed; retrying.\n' "$attempt" >&2
+              sleep 8
+            done
+            return 1
+          }
+
           # Incremental deploy: only files whose checksum changed are uploaded.
           # The previous manifest lives next to the site, so a missing one simply
           # degrades to a full upload on the first run.
           ( cd website && find . -type f -print0 | sort -z | xargs -0 sha256sum ) > "$RUNNER_TEMP/new.sha256"
-          ssh "${ssh_options[@]}" "$target" "cat '$manifest' 2>/dev/null || true" > "$RUNNER_TEMP/old.sha256"
+          remote "cat '$manifest' 2>/dev/null || true" > "$RUNNER_TEMP/old.sha256"
           grep -vxF -f "$RUNNER_TEMP/old.sha256" "$RUNNER_TEMP/new.sha256" > "$RUNNER_TEMP/changed.lines" || true
           awk '{ p = $2; sub(/^\*/, "", p); print p }' "$RUNNER_TEMP/new.sha256" | sort > "$RUNNER_TEMP/new.paths"
           awk '{ p = $2; sub(/^\*/, "", p); print p }' "$RUNNER_TEMP/old.sha256" | sort > "$RUNNER_TEMP/old.paths"
@@ -91,8 +105,8 @@ jobs:
             tar -C website -czf "$RUNNER_TEMP/changes.tgz" -T "$RUNNER_TEMP/changed.paths"
             uploaded=""
             for attempt in 1 2 3; do
-              if ssh "${ssh_options[@]}" "$target" "cat > /tmp/homepage-changes.tgz" < "$RUNNER_TEMP/changes.tgz" \
-                 && ssh "${ssh_options[@]}" "$target" "tar -xzf /tmp/homepage-changes.tgz -C '$DEPLOY_PATH' && rm -f /tmp/homepage-changes.tgz"; then
+              if remote "cat > /tmp/homepage-changes.tgz" < "$RUNNER_TEMP/changes.tgz" \
+                 && remote "tar -xzf /tmp/homepage-changes.tgz -C '$DEPLOY_PATH' && rm -f /tmp/homepage-changes.tgz"; then
                 uploaded=yes
                 break
               fi
@@ -106,10 +120,10 @@ jobs:
 
           if [ -s "$RUNNER_TEMP/delete.paths" ]; then
             printf 'Removing %s stale path(s).\n' "$(wc -l < "$RUNNER_TEMP/delete.paths")"
-            ssh "${ssh_options[@]}" "$target" "cd '$DEPLOY_PATH' && while IFS= read -r stale; do [ -n \"\$stale\" ] && rm -rf -- \"\$stale\"; done" < "$RUNNER_TEMP/delete.paths"
+            remote "cd '$DEPLOY_PATH' && while IFS= read -r stale; do [ -n \"\$stale\" ] && rm -rf -- \"\$stale\"; done" < "$RUNNER_TEMP/delete.paths"
           fi
 
-          ssh "${ssh_options[@]}" "$target" "mkdir -p '$state_dir' && cat > '$manifest'" < "$RUNNER_TEMP/new.sha256"
+          remote "mkdir -p '$state_dir' && cat > '$manifest'" < "$RUNNER_TEMP/new.sha256"
           printf 'Deployed %s file(s); manifest written to %s.\n' "$(wc -l < "$RUNNER_TEMP/new.sha256")" "$manifest"
 
       - name: Verify uploaded homepage
@@ -128,6 +142,17 @@ jobs:
             -o TCPKeepAlive=yes
           )
           target="$DEPLOY_USER@$DEPLOY_HOST"
+          remote() {
+            local attempt
+            for attempt in 1 2 3 4; do
+              if ssh "${ssh_options[@]}" "$target" "$@"; then
+                return 0
+              fi
+              printf 'ssh attempt %s failed; retrying.\n' "$attempt" >&2
+              sleep 8
+            done
+            return 1
+          }
           curl_options=(
             --fail
             --silent
@@ -141,15 +166,15 @@ jobs:
             --resolve "ellan.site:443:$DEPLOY_HOST"
           )
           local_checksum="$(sha256sum website/index.html | awk '{print $1}')"
-          remote_checksum="$(ssh "${ssh_options[@]}" "$target" "sha256sum '$DEPLOY_PATH/index.html'" | awk '{print $1}')"
+          remote_checksum="$(remote "sha256sum '$DEPLOY_PATH/index.html'" | awk '{print $1}')"
           printf 'Local index.html SHA-256: %s\n' "$local_checksum"
           printf 'Remote index.html SHA-256: %s\n' "$remote_checksum"
-          ssh "${ssh_options[@]}" "$target" "stat --format='Remote index.html: size=%s modified=%y' '$DEPLOY_PATH/index.html'"
+          remote "stat --format='Remote index.html: size=%s modified=%y' '$DEPLOY_PATH/index.html'"
           test "$local_checksum" = "$remote_checksum"
 
           served_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/' | sha256sum | awk '{print $1}')"
           printf 'Nginx response SHA-256: %s\n' "$served_checksum"
-          ssh "${ssh_options[@]}" "$target" "find /www/wwwroot -type f -name index.html -exec sha256sum {} + | grep -F '$served_checksum' || true"
+          remote "find /www/wwwroot -type f -name index.html -exec sha256sum {} + | grep -F '$served_checksum' || true"
           test "$local_checksum" = "$served_checksum"
 
           local_plan_checksum="$(sha256sum website/plan.html | awk '{print $1}')"
@@ -207,7 +232,7 @@ jobs:
             'temp/survivors.html'
             'temp/prevent.html'
           )
-          printf '%s\n' "${noindex_pages[@]}" | ssh "${ssh_options[@]}" "$target" "cd '$DEPLOY_PATH' && while IFS= read -r page; do [ -n \"\$page\" ] || continue; grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' \"\$page\" > /dev/null || { printf 'Missing noindex meta on %s\n' \"\$page\"; exit 1; }; done"
+          printf '%s\n' "${noindex_pages[@]}" | remote "cd '$DEPLOY_PATH' && while IFS= read -r page; do [ -n \"\$page\" ] || continue; grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' \"\$page\" > /dev/null || { printf 'Missing noindex meta on %s\n' \"\$page\"; exit 1; }; done"
 
           for asset in 'css/plan.css?v=20260810-plan-telemetry-v3' 'js/plan.js?v=20260810-plan-telemetry-v3'; do
             asset_path="${asset%%\?*}"
