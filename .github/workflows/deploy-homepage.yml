@@ -131,28 +131,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          ssh_options=(
-            -p "$DEPLOY_PORT"
-            -i "$HOME/.ssh/id_ed25519"
-            -o IdentitiesOnly=yes
-            -o StrictHostKeyChecking=yes
-            -o ConnectTimeout=20
-            -o ServerAliveInterval=15
-            -o ServerAliveCountMax=6
-            -o TCPKeepAlive=yes
-          )
-          target="$DEPLOY_USER@$DEPLOY_HOST"
-          remote() {
-            local attempt
-            for attempt in 1 2 3 4; do
-              if ssh "${ssh_options[@]}" "$target" "$@"; then
-                return 0
-              fi
-              printf 'ssh attempt %s failed; retrying.\n' "$attempt" >&2
-              sleep 8
-            done
-            return 1
-          }
           curl_options=(
             --fail
             --silent
@@ -166,15 +144,9 @@ jobs:
             --resolve "ellan.site:443:$DEPLOY_HOST"
           )
           local_checksum="$(sha256sum website/index.html | awk '{print $1}')"
-          remote_checksum="$(remote "sha256sum '$DEPLOY_PATH/index.html'" | awk '{print $1}')"
-          printf 'Local index.html SHA-256: %s\n' "$local_checksum"
-          printf 'Remote index.html SHA-256: %s\n' "$remote_checksum"
-          remote "stat --format='Remote index.html: size=%s modified=%y' '$DEPLOY_PATH/index.html'"
-          test "$local_checksum" = "$remote_checksum"
-
           served_checksum="$(curl "${curl_options[@]}" 'https://ellan.site/' | sha256sum | awk '{print $1}')"
-          printf 'Nginx response SHA-256: %s\n' "$served_checksum"
-          remote "find /www/wwwroot -type f -name index.html -exec sha256sum {} + | grep -F '$served_checksum' || true"
+          printf 'Local index.html SHA-256: %s\n' "$local_checksum"
+          printf 'Served index.html SHA-256: %s\n' "$served_checksum"
           test "$local_checksum" = "$served_checksum"
 
           local_plan_checksum="$(sha256sum website/plan.html | awk '{print $1}')"
@@ -232,7 +204,14 @@ jobs:
             'temp/survivors.html'
             'temp/prevent.html'
           )
-          printf '%s\n' "${noindex_pages[@]}" | remote "cd '$DEPLOY_PATH' && while IFS= read -r page; do [ -n \"\$page\" ] || continue; grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' \"\$page\" > /dev/null || { printf 'Missing noindex meta on %s\n' \"\$page\"; exit 1; }; done"
+          for noindex_page in "${noindex_pages[@]}"; do
+            head_bytes="$(curl "${curl_options[@]}" --max-time 60 "https://ellan.site/$noindex_page" 2>/dev/null | head -c 20000 || true)"
+            case "$head_bytes" in
+              *'<meta name="robots" content="noindex, nofollow"'*) ;;
+              *) printf 'Missing noindex meta on %s\n' "$noindex_page" >&2; exit 1 ;;
+            esac
+          done
+          printf 'Checked noindex meta on %s page(s) over HTTPS.\n' "${#noindex_pages[@]}"
 
           for asset in 'css/plan.css?v=20260810-plan-telemetry-v3' 'js/plan.js?v=20260810-plan-telemetry-v3'; do
             asset_path="${asset%%\?*}"
