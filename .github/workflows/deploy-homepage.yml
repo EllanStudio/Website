@@ -66,13 +66,51 @@ jobs:
             -i "$HOME/.ssh/id_ed25519"
             -o IdentitiesOnly=yes
             -o StrictHostKeyChecking=yes
+            -o ConnectTimeout=20
+            -o ServerAliveInterval=15
+            -o ServerAliveCountMax=6
+            -o TCPKeepAlive=yes
           )
           target="$DEPLOY_USER@$DEPLOY_HOST"
-          staging_dir="$DEPLOY_PATH/.deploy-staging-$GITHUB_RUN_ID"
+          state_dir="$(dirname "$DEPLOY_PATH")/.deploy-state-homepage-1.3"
+          manifest="$state_dir/manifest.sha256"
 
-          ssh "${ssh_options[@]}" "$target" "rm -rf '$staging_dir' && mkdir -p '$staging_dir'"
-          tar -C website -czf - . | ssh "${ssh_options[@]}" "$target" "tar -xzf - -C '$staging_dir'"
-          ssh "${ssh_options[@]}" "$target" "find '$DEPLOY_PATH' -mindepth 1 -maxdepth 1 ! -name '.deploy-staging-$GITHUB_RUN_ID' -exec rm -rf {} + && find '$staging_dir' -mindepth 1 -maxdepth 1 -exec mv -t '$DEPLOY_PATH' {} + && rmdir '$staging_dir'"
+          # Incremental deploy: only files whose checksum changed are uploaded.
+          # The previous manifest lives next to the site, so a missing one simply
+          # degrades to a full upload on the first run.
+          ( cd website && find . -type f -print0 | sort -z | xargs -0 sha256sum ) > "$RUNNER_TEMP/new.sha256"
+          ssh "${ssh_options[@]}" "$target" "cat '$manifest' 2>/dev/null || true" > "$RUNNER_TEMP/old.sha256"
+          grep -vxF -f "$RUNNER_TEMP/old.sha256" "$RUNNER_TEMP/new.sha256" > "$RUNNER_TEMP/changed.lines" || true
+          awk '{ p = $2; sub(/^\*/, "", p); print p }' "$RUNNER_TEMP/new.sha256" | sort > "$RUNNER_TEMP/new.paths"
+          awk '{ p = $2; sub(/^\*/, "", p); print p }' "$RUNNER_TEMP/old.sha256" | sort > "$RUNNER_TEMP/old.paths"
+          comm -13 "$RUNNER_TEMP/new.paths" "$RUNNER_TEMP/old.paths" > "$RUNNER_TEMP/delete.paths" || true
+
+          if [ -s "$RUNNER_TEMP/changed.lines" ]; then
+            awk '{ p = $2; sub(/^\*/, "", p); print p }' "$RUNNER_TEMP/changed.lines" > "$RUNNER_TEMP/changed.paths"
+            printf 'Uploading %s changed file(s).\n' "$(wc -l < "$RUNNER_TEMP/changed.paths")"
+            tar -C website -czf "$RUNNER_TEMP/changes.tgz" -T "$RUNNER_TEMP/changed.paths"
+            uploaded=""
+            for attempt in 1 2 3; do
+              if ssh "${ssh_options[@]}" "$target" "cat > /tmp/homepage-changes.tgz" < "$RUNNER_TEMP/changes.tgz" \
+                 && ssh "${ssh_options[@]}" "$target" "tar -xzf /tmp/homepage-changes.tgz -C '$DEPLOY_PATH' && rm -f /tmp/homepage-changes.tgz"; then
+                uploaded=yes
+                break
+              fi
+              printf 'Upload attempt %s failed; retrying.\n' "$attempt"
+              sleep 10
+            done
+            test -n "$uploaded"
+          else
+            printf 'No changed files to upload.\n'
+          fi
+
+          if [ -s "$RUNNER_TEMP/delete.paths" ]; then
+            printf 'Removing %s stale path(s).\n' "$(wc -l < "$RUNNER_TEMP/delete.paths")"
+            ssh "${ssh_options[@]}" "$target" "cd '$DEPLOY_PATH' && while IFS= read -r stale; do [ -n \"\$stale\" ] && rm -rf -- \"\$stale\"; done" < "$RUNNER_TEMP/delete.paths"
+          fi
+
+          ssh "${ssh_options[@]}" "$target" "mkdir -p '$state_dir' && cat > '$manifest'" < "$RUNNER_TEMP/new.sha256"
+          printf 'Deployed %s file(s); manifest written to %s.\n' "$(wc -l < "$RUNNER_TEMP/new.sha256")" "$manifest"
 
       - name: Verify uploaded homepage
         shell: bash
@@ -84,6 +122,10 @@ jobs:
             -i "$HOME/.ssh/id_ed25519"
             -o IdentitiesOnly=yes
             -o StrictHostKeyChecking=yes
+            -o ConnectTimeout=20
+            -o ServerAliveInterval=15
+            -o ServerAliveCountMax=6
+            -o TCPKeepAlive=yes
           )
           target="$DEPLOY_USER@$DEPLOY_HOST"
           curl_options=(
@@ -165,9 +207,7 @@ jobs:
             'temp/survivors.html'
             'temp/prevent.html'
           )
-          for noindex_page in "${noindex_pages[@]}"; do
-            ssh "${ssh_options[@]}" "$target" "grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' '$DEPLOY_PATH/$noindex_page' > /dev/null"
-          done
+          printf '%s\n' "${noindex_pages[@]}" | ssh "${ssh_options[@]}" "$target" "cd '$DEPLOY_PATH' && while IFS= read -r page; do [ -n \"\$page\" ] || continue; grep -F -m 1 '<meta name=\"robots\" content=\"noindex, nofollow\"' \"\$page\" > /dev/null || { printf 'Missing noindex meta on %s\n' \"\$page\"; exit 1; }; done"
 
           for asset in 'css/plan.css?v=20260810-plan-telemetry-v3' 'js/plan.js?v=20260810-plan-telemetry-v3'; do
             asset_path="${asset%%\?*}"
