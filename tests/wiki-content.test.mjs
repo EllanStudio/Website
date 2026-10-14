@@ -32,6 +32,20 @@ test('all scene images exist; media placeholders never request imaginary assets'
     }
   }
 });
+test('optional reference table and demo clips point at real files', () => {
+  for (const a of data.articles) {
+    if (a.table) {
+      assert.ok(a.table.caption, `${a.id}: table caption`);
+      assert.ok(a.table.headers.length >= 2, `${a.id}: table headers`);
+      for (const row of a.table.rows) assert.equal(row.length, a.table.headers.length, `${a.id}: table row width`);
+    }
+    for (const demo of a.demos || []) {
+      assert.equal(demo.length, 2, `${a.id}: demo shape`);
+      assert.match(demo[0], /^img\/[a-z0-9/_-]+\.(webp|png|jpg|gif|mp4|webm)$/i, demo[0]);
+      assert.ok(existsSync(fileURLToPath(new URL(demo[0], root))), demo[0]);
+    }
+  }
+});
 test('home entries and command links resolve; no administrative commands published', () => {
   for (const id of data.featured) assert.ok(ids.has(id), id);
   assert.equal(new Set(data.commands.map(c=>c.command)).size, data.commands.length);

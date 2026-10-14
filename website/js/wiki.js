@@ -71,11 +71,18 @@
     const c = categories.get(a.category);
     const extras = (a.details || []).map(([title, body]) => `<details class="guide-extra"><summary>${esc(title)}</summary><p>${esc(body)}</p></details>`).join('');
     const source = (a.sources || []).map(([title,url]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(title)}</a>`).join(' · ');
+    const table = a.table ? `<figure class="guide-table"><figcaption>${esc(a.table.caption)}</figcaption><div class="guide-table-scroll"><table><thead><tr>${a.table.headers.map(cell => `<th>${esc(cell)}</th>`).join('')}</tr></thead><tbody>${a.table.rows.map(row => `<tr>${row.map(cell => `<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></figure>` : '';
+    const demos = (a.demos || []).length ? `<section class="guide-demos"><h2>操作演示</h2><div class="guide-demo-grid">${a.demos.map(([src, caption]) => {
+      const isVideo = /\.(mp4|webm)(\?|$)/i.test(src);
+      const media = isVideo ? `<video controls preload="metadata" playsinline src="${esc(src)}"></video>` : `<img src="${esc(src)}" alt="${esc(caption)}" loading="lazy" decoding="async">`;
+      return `<figure class="guide-demo">${media}<figcaption>${esc(caption)}</figcaption></figure>`;
+    }).join('')}</div></section>` : '';
     return `<div class="guide-topline"><a href="#category-${a.category}">${icon('arrow-left')}返回${esc(c.title)}</a><button class="icon-button" type="button" data-copy-link title="复制本篇链接" aria-label="复制本篇链接">${icon('link')}</button></div>
       <article><header class="guide-head"><p class="manual-eyebrow">${esc(a.tag)} / ${a.steps.length} 步上手</p><h1>${esc(a.title)}</h1><p>${esc(a.summary)}</p></header>
       <div class="guide-layout"><div class="guide-body"><dl class="guide-facts"><div><dt>去哪里</dt><dd>${esc(a.where)}</dd></div><div><dt>准备什么</dt><dd>${esc(a.prepare)}</dd></div><div><dt>完成后</dt><dd>${esc(a.result)}</dd></div></dl>
       <ol class="guide-step-list">${a.steps.map(([title,body])=>`<li><h2>${esc(title)}</h2><p>${esc(body)}</p></li>`).join('')}</ol>
       ${a.caution ? `<p class="guide-caution">${esc(a.caution)}</p>` : ''}
+      ${table}${demos}
       ${a.helpTemplate ? `<section class="help-template"><h2>直接复制这份提问模板</h2><pre>${esc(a.helpTemplate)}</pre><button type="button" class="manual-link" data-copy="${esc(a.helpTemplate)}">${icon('copy')}复制提问模板</button></section>` : ''}${extras}
       ${source ? `<p class="guide-sources">机制参考：${source}。艾尔岚的物品要求与奖励以游戏内显示为准。</p>` : ''}</div>
       <aside class="guide-side" aria-label="操作演示与相关教程"><figure class="guide-scene"><img src="img/${esc(a.image)}" alt="${esc(a.title)}：艾尔岚实景" width="480" height="360"></figure>

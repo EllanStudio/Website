@@ -138,6 +138,22 @@
 .guide-next a { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; gap: 8px; font-size: 14px; color: var(--leaf); }
 .guide-sources { font-size: 12px; margin-top: 28px; color: var(--muted); }
 .guide-sources a { color: var(--aqua); text-decoration: underline; text-underline-offset: 3px; }
+.guide-table { margin: 0 0 26px; }
+.guide-table figcaption { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.guide-table-scroll { overflow-x: auto; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.guide-table table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14px; }
+.guide-table th, .guide-table td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.guide-table tr:last-child th, .guide-table tr:last-child td { border-bottom: 0; }
+.guide-table th { color: var(--muted); font-weight: 400; font-size: 12px; }
+.guide-table td { color: #c1c7b9; }
+.guide-table th:first-child, .guide-table td:first-child { color: var(--text); }
+.guide-table tbody tr:hover { background: var(--card); }
+.guide-demos { margin: 0 0 26px; }
+.guide-demos h2 { font-size: 19px; font-weight: 400; margin-bottom: 14px; }
+.guide-demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.guide-demo { margin: 0; }
+.guide-demo video, .guide-demo img { width: 100%; height: auto; display: block; border-radius: 4px; background: #0b0d09; }
+.guide-demo figcaption { margin-top: 8px; font-size: 12px; line-height: 1.6; color: var(--muted); }
 .command-copy { padding: 10px 12px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 15px; font-size: 12px; }
 .command-copy code { color: var(--aqua); overflow-wrap: anywhere; }
 .handbook-footer { margin-top: 44px; padding: 24px 0; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 12px; color: var(--muted); }
