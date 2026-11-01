@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>服务器新闻 · Ellan 艾尔岚 Minecraft 服务器</title>
+	<meta name="language" content="zh-CN">
+	<meta name="author" content="Ellan">
+	<meta name="description" content="艾尔岚 Minecraft 服务器的公告与更新日志：活动结果、版本更新、玩法调整，与官方 QQ 频道同步。">
+	<meta name="keywords" content="Minecraft,艾尔岚,Ellan,MC服务器,服务器公告,更新日志">
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+	<link rel="canonical" href="https://ellan.site/news.html">
+	<meta property="og:type" content="website">
+	<meta property="og:locale" content="zh_CN">
+	<meta property="og:site_name" content="艾尔岚 Minecraft 服务器">
+	<meta property="og:title" content="服务器新闻 · Ellan 艾尔岚">
+	<meta property="og:description" content="艾尔岚的公告与更新日志，与官方 QQ 频道同步。">
+	<meta property="og:url" content="https://ellan.site/news.html">
+	<meta property="og:image" content="https://ellan.site/img/hero-world.jpg">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="服务器新闻 · Ellan 艾尔岚">
+	<meta name="twitter:description" content="艾尔岚的公告与更新日志。">
+	<link rel="icon" href="img/icon.png">
+	<script>
+		try {
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches && sessionStorage.getItem('ellan:page-transition-target') === location.pathname) document.documentElement.classList.add('page-arriving');
+		} catch (e) { /* storage may be unavailable */ }
+	</script>
+	<link rel="stylesheet" href="css/main.css?v=20260802-copy-fix">
+	<link rel="stylesheet" href="css/news.css?v=20261102-news-v1">
+	<script defer src="js/main.js?v=20260921-handbook"></script>
+	<script defer src="js/news.js?v=20261102-news-v1"></script>
+	<script defer src="js/liquid-glass.js?v=20260801-liquid-glass-v5"></script>
+</head>
+<body class="news-page is-loading" data-fixed-nav-section="news">
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header id="site-header">
+		<nav class="nav container" aria-label="主导航">
+			<a class="nav-brand" href="index.html#top" aria-label="返回艾尔岚首页">
+				<img src="img/icon.png" alt="艾尔岚 Logo" width="34" height="34">
+				<span class="nav-brand-copy"><strong>ELLAN.TOP</strong></span>
+			</a>
+			<div class="nav-links">
+				<a href="index.html#top" class="nav-link" data-scroll-section="top">首页</a>
+				<a href="index.html#features" class="nav-link" data-scroll-section="features">核心玩法</a>
+				<a href="index.html#intro" class="nav-link" data-scroll-section="intro">大陆图鉴</a>
+				<a href="index.html#team" class="nav-link" data-scroll-section="team">运营团队</a>
+				<a href="wiki.html" class="nav-link" data-scroll-section="wiki" data-scroll-section="wiki">新手旅行手册</a>
+				<a href="thirteen-bells.html" class="nav-link" data-scroll-section="thirteen-bells">十三钟</a>
+				<a href="plan.html" class="nav-link" data-scroll-section="plan">大陆数据</a>
+				<a href="news.html" class="nav-link active" data-scroll-section="news" aria-current="page">服务器新闻</a>
+			</div>
+			<div class="nav-actions">
+				<button class="btn btn-quiet btn-sm" type="button" onclick="copyServerIP()">复制 IP</button>
+				<a class="btn btn-rune btn-sm" href="https://4md1kbe7hj70z.doubao.link/app/app_17h29dkq5et" target="_blank" rel="noopener noreferrer"><span>建筑大赛投票</span></a><a class="btn btn-ghost btn-sm" href="https://typethe0ry.github.io/Gaius/Gaius-26.2.html" target="_blank" rel="noopener noreferrer">在线游玩</a>
+			</div>
+		</nav>
+	</header>
+
+	<main id="main">
+		<section id="top" class="news-hero" aria-labelledby="news-title">
+			<div class="news-hero-grid" aria-hidden="true"></div>
+			<div class="news-hero-inner container">
+				<nav class="news-breadcrumb" aria-label="当前位置"><a href="index.html#top">艾尔岚大陆</a><span aria-hidden="true">·</span><strong aria-current="page">服务器新闻</strong></nav>
+				<p class="news-eyebrow">NEWS · 大陆公告</p>
+				<h1 id="news-title"><span class="grad-text grad-anim">大陆新闻</span></h1>
+				<p class="news-hero-intro">活动结果、版本更新与玩法调整，和官方 QQ 频道同步。</p>
+			</div>
+		</section>
+
+		<section class="news-section" aria-labelledby="news-list-title">
+			<div class="container">
+				<header class="news-toolbar">
+					<div><p class="kicker">LATEST</p><h2 id="news-list-title">最新消息</h2></div>
+					<div class="news-controls">
+						<div id="news-filter" class="news-segmented" role="group" aria-label="按类别筛选"></div>
+						<span id="news-updated" class="news-updated" role="status" aria-live="polite">读取中</span>
+					</div>
+				</header>
+
+				<div id="news-list" class="news-list" aria-live="polite" aria-busy="true"></div>
+				<p id="news-empty" class="news-empty" hidden>暂时没有新闻。</p>
+				<p id="news-error" class="news-error" hidden>新闻暂时无法加载，请稍后刷新重试。<button id="news-retry" class="news-retry" type="button">重试</button></p>
+				<noscript><p class="news-empty">启用 JavaScript 以查看新闻，或前往 <a href="https://pd.qq.com/g/7t440j2oby" target="_blank" rel="noopener noreferrer">官方 QQ 频道</a>。</p></noscript>
+
+				<p class="news-source">来源：<a href="https://pd.qq.com/g/7t440j2oby?subc=696265009" target="_blank" rel="noopener noreferrer">艾尔岚官方 QQ 频道 · 服务器公告</a>，每几分钟自动同步。</p>
+			</div>
+		</section>
+	</main>
+
+	<footer><div class="container footer-inner"><strong>ELLAN.TOP</strong><span>艾尔岚工作室 · © 2022—2026 · 纯公益 · 长期运营 · 原版生存</span><a class="btn btn-ghost btn-sm" href="legal.html">法律声明</a><p class="footer-legal">艾尔岚是玩家自发组织的非官方社区服务器，与 Mojang Studios、Microsoft 及网易公司无任何隶属、授权或赞助关系；「Minecraft」「我的世界」均为其各自权利方的商标；本页数据由 Plan Player Analytics 聚合生成。</p></div></footer>
+	<div id="toast-root" aria-live="polite"></div>
+</body>
+</html>

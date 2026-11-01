@@ -38,6 +38,8 @@ jobs:
           php -l website/api/plan-network.php
           php -l website/api/plan-performance.php
           php tests/plan-performance.test.php
+          php -l website/api/launcher-news.php
+          php tests/launcher-news.test.php
 
       - name: Configure SSH
         shell: bash
