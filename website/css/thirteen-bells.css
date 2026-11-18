@@ -303,6 +303,8 @@ h2 { margin-bottom: 0; font-family: Georgia, "STSong", serif; font-size: 62px; l
 
 .roadmap { background: #171713; }
 .roadmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.roadmap-grid.three { grid-template-columns: repeat(3, 1fr); }
+.note { margin-top: 24px; }
 .roadmap-col { padding: 34px; border: 1px solid var(--line); }
 .roadmap-col.live { border-top: 3px solid var(--teal); }
 .roadmap-col.future { border-top: 3px solid var(--ember); }
@@ -335,6 +337,7 @@ footer { padding: 28px 0; color: #777267; background: #090908; border-top: 1px s
 .reveal.visible { opacity: 1; transform: none; }
 
 @media (max-width: 900px) {
+  .roadmap-grid.three { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .section { padding: 82px 0; }
   h1 { font-size: 84px; }
