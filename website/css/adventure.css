@@ -1,0 +1,31 @@
+/* 冒险服页：沿用玩法百科（main.css + gameplay.css）的外壳与卡片，只补充十三钟时间轴等少量专用部件 */
+.adventure-photos { margin-top: 48px; }
+
+.bell-meter { position: relative; padding: 40px 32px 32px; border: 1px solid var(--line); border-radius: 24px; background: var(--card); }
+.bell-line { position: absolute; left: 56px; right: 56px; top: 74px; height: 2px; background: var(--line); }
+.bell-line-fill { width: 0; height: 100%; background: var(--grad); box-shadow: 0 0 14px rgba(143, 221, 85, .45); transition: width .45s ease; }
+.bell-grid { position: relative; display: grid; grid-template-columns: repeat(13, 1fr); gap: 6px; }
+.bell { padding: 0; border: 0; background: none; color: var(--text-dim); font: inherit; cursor: pointer; text-align: center; }
+.bell-dot { display: grid; place-items: center; width: 40px; height: 40px; margin: 0 auto 12px; border: 1px solid var(--line); border-radius: 50%; background: var(--bg); font-family: var(--font-display); font-size: 12px; transition: border-color .2s ease, color .2s ease, box-shadow .2s ease; }
+.bell small { display: block; font-size: 11px; line-height: 1.5; }
+.bell.key .bell-dot { border-color: rgba(143, 221, 85, .5); color: var(--text); }
+.bell:hover .bell-dot, .bell:focus-visible .bell-dot { border-color: var(--leaf); color: var(--leaf); }
+.bell.active .bell-dot { border-color: var(--leaf); color: var(--bg); background: var(--leaf); box-shadow: 0 0 18px rgba(143, 221, 85, .5); }
+.bell.active { color: var(--text); }
+.bell-detail { margin-top: 30px; padding: 22px 26px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255, 255, 255, .02); }
+.bell-detail b { display: block; margin-bottom: 8px; font-size: 18px; }
+.bell-detail p { margin: 0; color: var(--text-dim); line-height: 1.8; }
+
+.evidence-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
+.evidence-wall span { padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--text-dim); font-size: 12px; }
+.evidence-wall b { color: var(--text); }
+
+@media (max-width: 900px) {
+	.bell-grid { grid-template-columns: repeat(5, 1fr); row-gap: 20px; }
+	.bell-line { display: none; }
+}
+@media (max-width: 600px) {
+	.bell-meter { padding: 26px 16px; }
+	.bell-grid { grid-template-columns: repeat(4, 1fr); }
+	.bell small { font-size: 10px; }
+}

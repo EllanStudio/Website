@@ -1,353 +1,253 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#11110f">
-  <meta name="description" content="艾尔岚冒险服《天穹余烬》：五种职业、两名首领、悬赏与保险的搜打撤玩法，已与五周目后勤世界逐步互通。">
-  <meta name="keywords" content="Minecraft,艾尔岚,十三钟,天穹余烬,撤离玩法,冒险服">
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <link rel="canonical" href="https://ellan.site/thirteen-bells.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="zh_CN">
-  <meta property="og:site_name" content="艾尔岚 Minecraft 服务器">
-  <meta property="og:title" content="艾尔岚：十三钟 · 第一赛季天穹余烬">
-  <meta property="og:description" content="冒险服天穹余烬已经开放：五种职业、两名首领、悬赏、保险与赛季榜，并与五周目后勤世界在聊天、金币和补给上全面互通。">
-  <meta property="og:url" content="https://ellan.site/thirteen-bells.html">
-  <meta property="og:image" content="https://ellan.site/img/thirteen-bells-hero.webp">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="艾尔岚：十三钟">
-  <meta name="twitter:description" content="家园负责让你出发，真相决定你如何回来。">
-  <meta name="twitter:image" content="https://ellan.site/img/thirteen-bells-hero.webp">
-  <title>艾尔岚：十三钟 | 五周目与冒险服预览</title>
-  <link rel="icon" href="img/icon.png">
-  <link rel="preload" as="image" href="img/thirteen-bells-hero.webp" type="image/webp" fetchpriority="high">
-  <link rel="stylesheet" href="css/thirteen-bells.css?v=20261118-v1">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>冒险服 · 天穹余烬 · Ellan 艾尔岚 Minecraft 服务器</title>
+	<meta name="language" content="zh-CN">
+	<meta name="author" content="Ellan">
+	<meta name="description" content="艾尔岚冒险服《天穹余烬》：五种职业、两名首领、悬赏与保险的搜打撤玩法，聊天、金币兑换与补给仓库已与生存服互通。">
+	<meta name="keywords" content="Minecraft,艾尔岚,Ellan,冒险服,天穹余烬,十三钟,搜打撤,撤离玩法">
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+	<link rel="canonical" href="https://ellan.site/thirteen-bells.html">
+	<meta property="og:type" content="website">
+	<meta property="og:locale" content="zh_CN">
+	<meta property="og:site_name" content="艾尔岚 Minecraft 服务器">
+	<meta property="og:title" content="冒险服 · 天穹余烬 · Ellan 艾尔岚">
+	<meta property="og:description" content="五种职业、两名首领、悬赏与保险的搜打撤玩法，已与生存服在聊天、金币和补给上互通。">
+	<meta property="og:url" content="https://ellan.site/thirteen-bells.html">
+	<meta property="og:image" content="https://ellan.site/img/thirteen-bells-hero.webp">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="冒险服 · 天穹余烬 · Ellan 艾尔岚">
+	<meta name="twitter:description" content="带上生存服的口粮与金币，进入废墟搜索、战斗，然后成功撤离。">
+	<meta name="twitter:image" content="https://ellan.site/img/thirteen-bells-hero.webp">
+	<link rel="icon" href="img/icon.png">
+	<script>
+		try {
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches && sessionStorage.getItem('ellan:page-transition-target') === location.pathname) document.documentElement.classList.add('page-arriving');
+		} catch (e) { /* storage may be unavailable */ }
+	</script>
+	<link rel="stylesheet" href="css/main.css?v=20260802-copy-fix">
+	<link rel="stylesheet" href="css/gameplay.css?v=20260802-mobile-fix">
+	<link rel="stylesheet" href="css/adventure.css?v=20261118-v2">
+	<script defer src="js/main.js?v=20260921-handbook"></script>
+	<script defer src="js/gameplay.js?v=20260801-liquid-glass-v3"></script>
+	<script defer src="js/adventure.js?v=20261118-v2"></script>
+	<script defer src="js/liquid-glass.js?v=20260801-liquid-glass-v5"></script>
 </head>
-<body>
-  <div class="progress" aria-hidden="true"></div>
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html" aria-label="返回艾尔岚官网首页">
-        <img class="brand-logo" src="img/icon.png" alt="" width="34" height="34">
-        <span>ELLAN.TOP<small>艾尔岚 · 第五周目</small></span>
-      </a>
-      <nav class="nav-links" aria-label="页面导航">
-        <a href="index.html">官网首页</a>
-        <a href="#worlds">双世界</a>
-        <a href="#adventure-now">冒险服玩法</a>
-        <a href="#link">互通进度</a>
-        <a href="#loop">玩法闭环</a>
-        <a href="#bells">十三钟</a>
-        <a href="#roadmap">进度总览</a>
-        <a href="wiki.html">新手旅行手册</a>
-      </nav>
-    </div>
-  </header>
+<body class="gameplay-page adventure-page" data-fixed-nav-section="thirteen-bells">
+	<a class="skip-link" href="#main">跳到主要内容</a>
+	<header id="site-header">
+		<nav class="nav container" aria-label="主导航">
+			<a class="nav-brand" href="index.html#top" aria-label="返回艾尔岚首页">
+				<img src="img/icon.png" alt="艾尔岚 Logo" width="34" height="34">
+				<span class="nav-brand-copy"><strong>ELLAN.TOP</strong></span>
+			</a>
+			<div class="nav-links">
+				<a href="index.html#top" class="nav-link" data-scroll-section="top">首页</a>
+				<a href="index.html#features" class="nav-link" data-scroll-section="features">核心玩法</a>
+				<a href="index.html#intro" class="nav-link" data-scroll-section="intro">大陆图鉴</a>
+				<a href="index.html#team" class="nav-link" data-scroll-section="team">运营团队</a>
+				<a href="wiki.html" class="nav-link" data-scroll-section="wiki" data-scroll-section="wiki">新手旅行手册</a>
+				<a href="thirteen-bells.html" class="nav-link active" data-scroll-section="thirteen-bells">冒险服</a>
+				<a href="plan.html" class="nav-link" data-scroll-section="plan">大陆数据</a>
+				<a href="news.html" class="nav-link" data-scroll-section="news">服务器新闻</a>
+			</div>
+			<div class="nav-actions">
+				<button class="btn btn-quiet btn-sm" type="button" onclick="copyServerIP()">复制 IP</button>
+				<a class="btn btn-ghost btn-sm" href="https://typethe0ry.github.io/Gaius/Gaius-26.2.html" target="_blank" rel="noopener noreferrer">在线游玩</a>
+			</div>
+		</nav>
+	</header>
+	<div class="reading-progress" aria-hidden="true"><i></i></div>
 
-  <main id="top">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-media" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <p class="kicker">第一赛季 · 天穹余烬</p>
-        <h1 id="hero-title"><span class="title-main"><span>艾尔岚：</span><span>十三钟</span></span><span>一座活着的家园，一场带回真相的远征</span></h1>
-        <p class="hero-copy">冒险服“天穹余烬”已经开放：选一个职业，带上装备进入废墟，搜索、战斗，然后赶在失败之前撤离。生存服里做好的口粮、赚到的金币，都能接进这条远征路线。</p>
-        <div class="hero-actions">
-          <a class="btn" href="#adventure-now">查看冒险服玩法</a>
-          <a class="btn ghost" href="#link">与生存服互通</a>
-        </div>
-        <div class="status-row" aria-label="开发状态">
-          <span class="status live"><strong>后勤世界</strong> 当前已开放</span>
-          <span class="status live"><strong>冒险服</strong> 已开放</span>
-          <span class="status live"><strong>金币兑换与补给仓库</strong> 已开放</span>
-          <span class="status"><strong>职业</strong> 5 种</span>
-          <span class="status"><strong>首领</strong> 2 名</span>
-        </div>
-      </div>
-    </section>
+	<main id="main">
+		<section id="top" class="game-hero" aria-labelledby="game-title">
+			<div class="game-hero-glow" aria-hidden="true"></div>
+			<div class="game-hero-inner">
+				<nav class="game-breadcrumb" aria-label="当前位置"><a href="index.html#features">核心玩法</a><span aria-hidden="true">·</span><strong aria-current="page">冒险服</strong></nav>
+				<p class="game-hero-eyebrow">艾尔岚冒险服</p>
+				<h1 id="game-title"><span class="grad-text grad-anim">天穹余烬</span></h1>
+				<p class="game-hero-cn">搜索 · 战斗 · 撤离</p>
+				<p class="game-hero-intro">选一个职业，带上生存服里做好的口粮，进入废墟搜索、战斗，然后赶在失败之前撤离。带出的战利品可以换成金币，回到家园继续生活。</p>
+				<p class="first-badge"><b>已开放</b><span>聊天 · 金币 · 补给，与生存服互通</span></p>
+				<div class="hero-stat-row" role="group" aria-label="冒险服规模">
+					<div class="hero-stat"><strong data-count="5">0</strong><span>种职业</span></div>
+					<div class="hero-stat"><strong data-count="35">0</strong><span>个职业技能</span></div>
+					<div class="hero-stat"><strong data-count="2">0</strong><span>名首领</span></div>
+				</div>
+			</div>
+			<div class="scroll-hint" aria-hidden="true"><span>继续向下</span><i></i></div>
+		</section>
 
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        <span><b>生产</b> 农耕 · 钓鱼 · 烹饪 · 酿酒</span><span><b>整备</b> 工程 · 附魔 · 交易 · 委托</span><span><b>远征</b> 搜索 · 战斗 · 认证 · 撤离</span><span><b>回流</b> 冒险币 · 战利品 · 赛季榜</span>
-        <span><b>生产</b> 农耕 · 钓鱼 · 烹饪 · 酿酒</span><span><b>整备</b> 工程 · 附魔 · 交易 · 委托</span><span><b>远征</b> 搜索 · 战斗 · 认证 · 撤离</span><span><b>回流</b> 冒险币 · 战利品 · 赛季榜</span>
-      </div>
-    </div>
+		<nav class="chapter-rail" aria-label="冒险服章节">
+			<div class="chapter-rail-inner container">
+				<a class="chapter-link active" href="#prologue"><b>00</b>序章</a>
+				<a class="chapter-link" href="#play"><b>01</b>玩法</a>
+				<a class="chapter-link" href="#link"><b>02</b>互通</a>
+				<a class="chapter-link" href="#loop"><b>03</b>闭环</a>
+				<a class="chapter-link" href="#bells"><b>04</b>十三钟</a>
+				<a class="chapter-link" href="#season"><b>05</b>赛季</a>
+				<a class="chapter-link" href="#roadmap"><b>06</b>进度</a>
+			</div>
+		</nav>
 
-    <section id="worlds" class="section worlds">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">One world, two fronts</p><h2>两个世界，一条命运</h2></div>
-          <p class="lead">五周目不会被冒险服取代。它是远征体系的<strong>家园、工坊、粮仓与市场</strong>；冒险服则把生产成果转化为真正需要权衡的战术资源。聊天、金币与补给均已互通。</p>
-        </div>
-      </div>
+		<section id="prologue" class="game-chapter" aria-labelledby="prologue-title">
+			<div class="chapter-number" aria-hidden="true">00</div>
+			<div class="container">
+				<header class="chapter-head reveal">
+					<p class="kicker">序章 · 两个世界</p>
+					<h2 id="prologue-title">家园负责让你出发</h2>
+					<p class="lead">生存服是远征的家园、工坊、粮仓与市场；冒险服把你的生产成果变成需要权衡的战术资源。进得去，也要带得回来。</p>
+				</header>
+				<div class="manifesto-grid reveal">
+					<article class="manifesto-item"><b>01 / 生产</b><h3>种出来<br>做出来</h3></article>
+					<article class="manifesto-item"><b>02 / 整备</b><h3>选职业<br>带补给</h3></article>
+					<article class="manifesto-item"><b>03 / 远征</b><h3>搜索交战<br>伺机撤离</h3></article>
+					<article class="manifesto-item"><b>04 / 回流</b><h3>战利品<br>换成金币</h3></article>
+				</div>
+				<div class="world-grid adventure-photos reveal">
+					<figure class="world-card"><img src="img/thirteen-bells-farmland.webp" alt="栖风谷麦田与巨树" loading="lazy"><figcaption>栖风谷 · 远征粮仓</figcaption></figure>
+					<figure class="world-card"><img src="img/thirteen-bells-tavern.webp" alt="温暖的酒馆室内" loading="lazy"><figcaption>森罗酒馆 · 补给与研究</figcaption></figure>
+				</div>
+			</div>
+		</section>
 
-      <article class="world-band reveal">
-        <div class="world-visual" style="background-image:url('img/thirteen-bells-city.webp')" role="img" aria-label="五周目主城白昼全景"></div>
-        <div class="world-copy">
-          <span class="number">01 · CURRENTLY PLAYABLE</span>
-          <h3>天穹避难所</h3>
-          <p>当前开放的主城、栖风谷、赤铁原与边境地带，构成艾尔岚文明的后勤网络。你可以安家、生产、研究、交易，也可以成为某一条产业链不可替代的专家。</p>
-          <ul>
-            <li>三十余种作物、跨维度钓鱼、两百余道菜品与深度酿酒</li>
-            <li>两百余种附魔、三百余件家具、玩家市场与动态经济</li>
-            <li>日常委托、限时订单、声望解锁与多人社区目标</li>
-          </ul>
-        </div>
-      </article>
+		<div class="reel-break"><span>第一章</span></div>
+		<section id="play" class="game-chapter alt" aria-labelledby="play-title">
+			<div class="chapter-number" aria-hidden="true">01</div>
+			<div class="container">
+				<header class="chapter-head center reveal">
+					<p class="kicker">冒险服玩法</p>
+					<h2 id="play-title">现在就能玩到的内容</h2>
+					<p class="lead">以下内容均已在冒险服开放，数值会根据玩家反馈持续调整。</p>
+				</header>
+				<div class="light-system-grid">
+					<article class="light-card reveal"><b>01 / 职业</b><h3>五种职业</h3><p>骑士、战士、猎人、刺客、术士，共三十五个职业技能。击杀怪物和成功撤离都能获得经验，升级得到技能点，用来学习新技能。</p></article>
+					<article class="light-card reveal"><b>02 / 怪物与首领</b><h3>废墟里的对手</h3><p>守卫、骷髅、僵尸骑士、恶魔、拟态怪与眼魔守在废墟里，两名首领“被诅咒的骑士”和“幽魂首领”带有前摇与可躲避的招式。</p></article>
+					<article class="light-card reveal"><b>03 / 结算</b><h3>身价与结算</h3><p>战利品会计入“身价”，撤离后在结算页看到本局带出的价值。身价越高，越要考虑要不要再往里走一步。</p></article>
+					<article class="light-card reveal"><b>04 / 悬赏</b><h3>每日悬赏</h3><p>每天抽取三条悬赏：击杀怪物、带着足够价值撤离、成功撤离若干次、击败首领、不用补给撤离。完成得到冒险币与经验。</p></article>
+					<article class="light-card reveal"><b>05 / 保险</b><h3>入局保险</h3><p>入局前选好要保的物品，死亡、弃局或断线时已投保的物品留在背包。名额随等级增加，保费按物品价值计算，不退还。</p></article>
+					<article class="light-card reveal"><b>06 / 赛季</b><h3>赛季榜与全服播报</h3><p>赛季是自然月，榜单按“撤离带出的价值”累计，不按余额排名。一局带出高价值战利品时，全服都会收到播报。</p></article>
+				</div>
+				<p class="craft-demand reveal">死了就丢，撤出去<span class="grad-text">才算真正拥有。</span></p>
+			</div>
+		</section>
 
-      <article class="world-band reverse reveal">
-        <div class="world-copy">
-          <span class="number">02 · NOW OPEN</span>
-          <h3>天穹余烬远征区</h3>
-          <p>冒险服已经开放：在大厅选好职业与装备，进入布满怪物与首领的废墟地图。带入多少补给、深入多远、什么时候撤离，都由你自己决定。</p>
-          <ul>
-            <li>五种职业、三十五个职业技能，击杀与撤离都能积累经验和技能点</li>
-            <li>死亡或弃局会失去本局战利品，成功撤离才算真正拥有，投保的物品除外</li>
-            <li>两名首领带有前摇与可躲避的招式，击败后记入悬赏</li>
-          </ul>
-        </div>
-        <div class="world-visual" style="background-image:url('img/thirteen-bells-cathedral.webp')" role="img" aria-label="主城教堂内部"></div>
-      </article>
-    </section>
+		<div class="reel-break"><span>第二章</span></div>
+		<section id="link" class="game-chapter" aria-labelledby="link-title">
+			<div class="chapter-number" aria-hidden="true">02</div>
+			<div class="container">
+				<header class="chapter-head reveal">
+					<p class="kicker">与生存服互通</p>
+					<h2 id="link-title">聊天、金币与补给，已经打通</h2>
+					<p class="lead">从生存服菜单就能进入冒险服。两边的聊天互通并同步到 QQ 群，金币与菜肴可以在两个世界之间流动。</p>
+				</header>
+				<div class="currency-grid">
+					<article class="currency-card reveal"><b>01 / 聊天</b><h3>聊天互通</h3><p>冒险服与生存服的聊天互通，并同步到 QQ 群，不用切服也能找到队友。</p></article>
+					<article class="currency-card reveal"><b>02 / 金币兑换</b><h3>冒险币 ⇄ 金币</h3><p>卖出 1 冒险币得 8 金币，买入 1 冒险币付 12 金币，来回兑换必亏。每个账号每天有兑换上限。</p></article>
+					<article class="currency-card reveal"><b>03 / 补给仓库</b><h3>带着口粮出发</h3><p>在生存服用 /补给 存入面包与烤肉类菜肴，到冒险服领取，用来恢复生命值。每局最多带 6 件，死亡即丢。</p></article>
+					<article class="currency-card reveal"><b>04 / 安全</b><h3>每一笔都有记录</h3><p>每一笔跨服操作都带有流水号，不会重复入账；兑换设有每日上限，不会变成无限印钞机。</p></article>
+				</div>
+			</div>
+		</section>
 
-    <section id="loop" class="section loop">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">The living economy</p><h2>每一种生活，都在支援下一次远征</h2></div>
-          <p class="lead">经济不再是为了把数字越刷越大。金币与声望连接生产、订单和装备，冒险服持续消耗物资，再把产出送回家园，形成能够长期循环的双向经济。</p>
-        </div>
-        <div class="loop-rail reveal">
-          <article class="loop-step"><span class="num">01</span><h3>生产</h3><p>作物、鱼获、酒水、料理与工程材料。</p></article>
-          <article class="loop-step"><span class="num">02</span><h3>流通</h3><p>系统订单托底，玩家商店决定高价值商品。</p></article>
-          <article class="loop-step"><span class="num">03</span><h3>整备</h3><p>准备口粮、药剂、装备、工具与撤离资源。</p></article>
-          <article class="loop-step"><span class="num">04</span><h3>远征</h3><p>搜索、交战，在时间与风险中推进。</p></article>
-          <article class="loop-step"><span class="num">05</span><h3>撤离</h3><p>带回战利品，失败则失去本局成果。</p></article>
-          <article class="loop-step"><span class="num">06</span><h3>回流</h3><p>战利品换成冒险币，再按汇率兑回金币。</p></article>
-        </div>
-      </div>
-    </section>
+		<div class="reel-break"><span>第三章</span></div>
+		<section id="loop" class="game-chapter alt" aria-labelledby="loop-title">
+			<div class="chapter-number" aria-hidden="true">03</div>
+			<div class="container">
+				<header class="chapter-head center reveal">
+					<p class="kicker">完整循环</p>
+					<h2 id="loop-title">每一种生活，都在支援下一次远征</h2>
+					<p class="lead">生产、整备、远征、撤离、回流，一圈走完，又是新的开始。你不必成为最强的战士，一位好厨师、好酿酒师，同样能决定一支队伍能否活着回来。</p>
+				</header>
+				<div class="loop-map reveal" role="group" aria-label="生存服生产到冒险服远征再回流的循环"><div class="loop-node"><strong>生产</strong><span>农耕、钓鱼、烹饪、酿酒</span></div><div class="loop-arrow"><b>→</b></div><div class="loop-node"><strong>整备</strong><span>补给仓库、选职业、投保</span></div><div class="loop-arrow"><b>→</b></div><div class="loop-node"><strong>远征</strong><span>搜索、战斗、首领</span></div><div class="loop-arrow"><b>→</b></div><div class="loop-node"><strong>撤离</strong><span>结算身价、悬赏与赛季榜</span></div><div class="loop-arrow"><b>→</b></div><div class="loop-node"><strong>回流</strong><span>冒险币兑换金币</span></div></div>
+				<p class="loop-return reveal">金币 → 种子 / 工具 / 家具 / 配方 / 商铺 → 更好的口粮与酒水 → 下一次远征</p>
+				<div class="world-grid adventure-photos reveal">
+					<figure class="world-card"><img src="img/thirteen-bells-market.webp" alt="主城市场摊位" loading="lazy"><figcaption>主城市场 · 玩家经济</figcaption></figure>
+					<figure class="world-card"><img src="img/thirteen-bells-city.webp" alt="五周目主城白昼全景" loading="lazy"><figcaption>主城 · 集结与出发</figcaption></figure>
+				</div>
+			</div>
+		</section>
 
-    <section class="section disciplines">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">Your role matters</p><h2>后勤不是支线，是远征的生命线</h2></div>
-          <p class="lead">你不必成为最强的战士。一个优秀的农夫、厨师、酿酒师、工程师或商人，同样能决定一支行动队能否活着回来。</p>
-        </div>
-        <div class="discipline-grid reveal">
-          <article class="discipline" data-index="01"><h3>农耕</h3><p>四季作物、稀有果实与温室产出将进入远征口粮、药剂、酒水和限时补给订单。<b>稳定产能就是避难所的底气。</b></p></article>
-          <article class="discipline" data-index="02"><h3>钓鱼</h3><p>从河流到岩浆与末地虚空，不同渔获承担食材、收藏和特殊委托价值。稀有鱼可成为行动队的高级补给。</p></article>
-          <article class="discipline" data-index="03"><h3>烹饪</h3><p>破解食材谜语，掌握厨具工序。两百余道菜品不只供收藏，也将成为远征前的餐食、任务订单与增益资源。</p></article>
-          <article class="discipline" data-index="04"><h3>酿酒</h3><p>投料、火候、蒸馏与陈酿共同决定品质。研究出的高星酒样可以满足高价订单，也能进入战术补给体系。</p></article>
-          <article class="discipline" data-index="05"><h3>工程</h3><p>赤铁原生产机械材料、红石组件和大型设施。未来的撤离装置、探测器与避难所升级，都需要工程玩家参与。</p></article>
-          <article class="discipline" data-index="06"><h3>商贸与安居</h3><p>摊位、玩家商店、家具与声望目录构成真实消费。远征带回的图纸和遗物，会再次改变家园的生活方式。</p></article>
-        </div>
-      </div>
-    </section>
+		<div class="reel-break"><span>第四章</span></div>
+		<section id="bells" class="game-chapter" aria-labelledby="bells-title">
+			<div class="chapter-number" aria-hidden="true">04</div>
+			<div class="container">
+				<header class="chapter-head reveal">
+					<p class="kicker">十三钟 · 世界观设计</p>
+					<h2 id="bells-title">钟声不是倒计时，是世界规则</h2>
+					<p class="lead"><strong>以下为第一赛季的世界观与规则设计，尚未在冒险服实装。</strong>每一次钟响都会改变地图、敌人和撤离条件，点击钟点查看设计中的关键变化。</p>
+				</header>
+				<div class="bell-meter reveal">
+					<div class="bell-line"><div class="bell-line-fill"></div></div>
+					<div class="bell-grid" role="list">
+						<button class="bell key active" type="button" data-bell="1"><span class="bell-dot">I</span><small>外环开放</small></button>
+						<button class="bell" type="button" data-bell="2"><span class="bell-dot">II</span><small>黑雾蔓延</small></button>
+						<button class="bell" type="button" data-bell="3"><span class="bell-dot">III</span><small>搜索加剧</small></button>
+						<button class="bell" type="button" data-bell="4"><span class="bell-dot">IV</span><small>亡灵巡逻</small></button>
+						<button class="bell key" type="button" data-bell="5"><span class="bell-dot">V</span><small>地下开启</small></button>
+						<button class="bell" type="button" data-bell="6"><span class="bell-dot">VI</span><small>路线收束</small></button>
+						<button class="bell key" type="button" data-bell="7"><span class="bell-dot">VII</span><small>历史重叠</small></button>
+						<button class="bell" type="button" data-bell="8"><span class="bell-dot">VIII</span><small>记忆回声</small></button>
+						<button class="bell" type="button" data-bell="9"><span class="bell-dot">IX</span><small>精英猎人</small></button>
+						<button class="bell key" type="button" data-bell="10"><span class="bell-dot">X</span><small>遗物共鸣</small></button>
+						<button class="bell" type="button" data-bell="11"><span class="bell-dot">XI</span><small>常规撤离关闭</small></button>
+						<button class="bell" type="button" data-bell="12"><span class="bell-dot">XII</span><small>首领强化</small></button>
+						<button class="bell key" type="button" data-bell="13"><span class="bell-dot">XIII</span><small>未撤离者失败</small></button>
+					</div>
+					<div class="bell-detail" aria-live="polite"><b>第一钟 · 外环开放</b><p>修道院外环搜索区开启。行动队第一次踏入废墟，学习带入、搜索、交战与撤离的基本循环。</p></div>
+				</div>
+			</div>
+		</section>
 
-    <section class="section breach">
-      <div class="section-inner">
-        <div class="breach-copy reveal">
-          <p class="eyebrow">Adventure server · open</p>
-          <h2>进入废墟，带回战利品</h2>
-          <p>废墟里有守卫、骷髅、恶魔、拟态怪，深处还有两名首领，也有同样想活着出去的 AI 冒险者。带得越多，越舍不得空手而归；撤离的时机，就是整场远征最难的选择。</p>
-          <div class="raid-steps">
-            <div class="raid-step"><span>01</span><b>选职业配装</b><small>选定职业，购买装备，选择要投保的物品。</small></div>
-            <div class="raid-step"><span>02</span><b>搜索交战</b><small>探索房间，击败怪物与首领。</small></div>
-            <div class="raid-step"><span>03</span><b>权衡风险</b><small>身价随战利品上涨，也越来越危险。</small></div>
-            <div class="raid-step"><span>04</span><b>成功撤离</b><small>结算身价，计入悬赏与赛季榜。</small></div>
-          </div>
-        </div>
-      </div>
-    </section>
+		<div class="reel-break"><span>第五章</span></div>
+		<section id="season" class="game-chapter alt" aria-labelledby="season-title">
+			<div class="chapter-number" aria-hidden="true">05</div>
+			<div class="container">
+				<header class="chapter-head center reveal">
+					<p class="kicker">第一赛季 · 剧情设计稿</p>
+					<h2 id="season-title">三十七座墓，只有三十六个名字</h2>
+					<p class="lead"><strong>剧情设计稿，尚未实装。</strong>一条固定真相，八段逐步深入的调查。每局的证据位置、局部事件与撤离路线会变化，让故事能被反复游玩。</p>
+				</header>
+				<div class="trade-grid reveal">
+					<article class="trade-card"><b>序章</b><h3>灰烬钟声</h3><p>寻找失踪补给，第一次理解“只有撤离，成果才会保存”。</p></article>
+					<article class="trade-card"><b>第一章</b><h3>破碎密报</h3><p>回收十三封命令，发现最后一封只有印章，没有正文。</p></article>
+					<article class="trade-card"><b>第二章</b><h3>断裂补给线</h3><p>三十七名孤儿入院，事后名册却只剩三十六人。</p></article>
+					<article class="trade-card"><b>第三章</b><h3>封印之下</h3><p>第七钟响起时，无名墓短暂出现，剧情证据首次改变战斗风险。</p></article>
+					<article class="trade-card"><b>第四章</b><h3>觊觎者</h3><p>王室、教会、学院与黑市公开介入，契约开始互相冲突。</p></article>
+					<article class="trade-card"><b>第五章</b><h3>漫长守夜</h3><p>钟声真正改变地图，避难所早于灾难存在的秘密浮出水面。</p></article>
+					<article class="trade-card"><b>第六章</b><h3>没有名字的继承人</h3><p>集齐人物、行为、时间、手段与原因，完成第一王女真相认证。</p></article>
+					<article class="trade-card"><b>终章</b><h3>最后祈祷</h3><p>面对“无瑕之王”，用事实削弱它，并把选择成功带出旧王都。</p></article>
+				</div>
+				<p class="craft-demand reveal">王都没有死于灾难，<span class="grad-text">王都死于一次成功的仪式。</span></p>
+				<div class="evidence-wall reveal" role="group" aria-label="设计中的五份关键证据"><span><b>阿尔弗雷德的真名</b>　打破“无名骑士”的护甲。</span><span><b>王宫封锁令</b>　停止首领战中的守卫增援。</span><span><b>第三十七座墓土</b>　关闭亡灵复活机制。</span><span><b>伊莱的记忆碎片</b>　打断纪年钟技能。</span><span><b>第一王女真相封印</b>　开启交涉结局与特殊撤离。</span></div>
+			</div>
+		</section>
 
-    <section id="adventure-now" class="section disciplines">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">Available now</p><h2>冒险服现在就能玩到的内容</h2></div>
-          <p class="lead">以下内容均已在冒险服上线。数值仍会根据玩家的反馈持续调整。</p>
-        </div>
-        <div class="discipline-grid reveal">
-          <article class="discipline" data-index="01"><h3>五种职业</h3><p>骑士、战士、猎人、刺客、术士，共三十五个职业技能。击杀怪物和成功撤离都能获得经验，升级得到技能点，用来学习新技能。</p></article>
-          <article class="discipline" data-index="02"><h3>怪物与首领</h3><p>守卫、骷髅、僵尸骑士、恶魔、拟态怪与眼魔守在废墟里，两名首领“被诅咒的骑士”和“幽魂首领”带有前摇与可躲避的招式。</p></article>
-          <article class="discipline" data-index="03"><h3>身价与结算</h3><p>战利品会计入“身价”，撤离后在结算页看到本局带出的价值。身价越高，越要考虑要不要再往里走一步。</p></article>
-          <article class="discipline" data-index="04"><h3>每日悬赏</h3><p>每天抽取三条悬赏：击杀怪物、带着足够价值撤离、成功撤离若干次、击败首领、不用补给撤离。完成得到冒险币与经验。</p></article>
-          <article class="discipline" data-index="05"><h3>入局保险</h3><p>入局前选好要保的物品，死亡、弃局或断线时已投保的物品留在背包。名额随等级增加，保费按物品价值计算，不退还。</p></article>
-          <article class="discipline" data-index="06"><h3>赛季榜与全服播报</h3><p>赛季是自然月，榜单按“撤离带出的价值”累计，不按余额排名。一局带出高价值战利品时，全服都会收到播报。</p></article>
-        </div>
-      </div>
-    </section>
+		<div class="reel-break"><span>第六章</span></div>
+		<section id="roadmap" class="game-chapter" aria-labelledby="roadmap-title">
+			<div class="chapter-number" aria-hidden="true">06</div>
+			<div class="container">
+				<header class="chapter-head reveal">
+					<p class="kicker">进度总览</p>
+					<h2 id="roadmap-title">现在能玩什么，接下来是什么</h2>
+					<p class="lead">我们会保留生活服的自由与长期积累，同时用冒险服为每条产业链建立稳定消耗和高价值目标。</p>
+				</header>
+				<div class="order-grid">
+					<article class="order-card reveal"><b>已开放</b><h3>冒险服与后勤世界</h3><div class="weekly-list"><span>主城 / 栖风谷 / 赤铁原 / 边境</span><span>五职业 · 两名首领</span><span>悬赏 · 保险 · 赛季榜</span><span>聊天互通 · QQ 群同步</span></div><p class="order-reward">现在就可以进入</p></article>
+					<article class="order-card reveal"><b>已开放</b><h3>金币与补给</h3><div class="weekly-list"><span>冒险币 ⇄ 金币兑换</span><span>补给仓库 /补给</span><span>面包与烤肉类菜肴</span></div><p class="order-reward">每日兑换上限 · 流水号防重复</p></article>
+					<article class="order-card reveal"><b>即将开放</b><h3>下一步</h3><div class="weekly-list"><span>酒水补给与限时增益</span><span>军械库与装备投影</span><span>冒险材料回流</span><span>赛季称号</span></div><p class="order-reward">陆续上线</p></article>
+				</div>
+			</div>
+		</section>
 
-    <section id="link" class="section loop">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">Two servers, one loop</p><h2>与生存服的互通进度</h2></div>
-          <p class="lead">聊天、金币与补给已经打通，酒水、装备与材料回流将陆续开放。</p>
-        </div>
-        <div class="roadmap-grid three reveal">
-          <article class="roadmap-col live">
-            <h3>聊天与出入</h3>
-            <p>已开放</p>
-            <ol>
-              <li>冒险服聊天与生存服互通，并同步到 QQ 群</li>
-              <li>从生存服菜单直接进入冒险服</li>
-              <li>冒险服自带的悬赏、保险与赛季榜</li>
-            </ol>
-          </article>
-          <article class="roadmap-col live">
-            <h3>金币与补给</h3>
-            <p>已开放</p>
-            <ol>
-              <li>冒险币与金币兑换：卖出 1 冒险币得 8 金币，买入 1 冒险币付 12 金币，来回兑换必亏，每个账号每天有兑换上限</li>
-              <li>补给仓库：在生存服用 /补给 存入面包与烤肉类菜肴，到冒险服领取，用来恢复生命值</li>
-            </ol>
-          </article>
-          <article class="roadmap-col future">
-            <h3>即将开放</h3>
-            <p>下一步</p>
-            <ol>
-              <li>酒水补给：按酒的品质给予力量、坚韧、迅捷等限时增益</li>
-              <li>军械库：把生存服打造的装备以“投影”形式带去冒险服</li>
-              <li>冒险服独有材料带回生存服，用于更高阶的菜肴</li>
-              <li>赛季称号在生存服显示</li>
-            </ol>
-          </article>
-        </div>
-        <p class="lead note reveal">补给在冒险服死亡即丢失，兑换设有每日上限，每一笔跨服操作都带有流水号，不会重复入账。</p>
-      </div>
-    </section>
+		<section class="game-finale" aria-labelledby="finale-title">
+			<div class="container reveal"><p class="kicker">准备好了吗</p><h2 id="finale-title">家园让你出发，<br><span class="grad-text">撤离让你赢</span></h2><p>从主城菜单进入冒险服，带上一份做好的口粮，试试第一次远征。</p><div class="finale-actions"><button class="btn btn-rune" type="button" onclick="copyServerIP()">复制 IP · ellan.top</button><a class="btn btn-ghost" href="gameplay.html">打开玩法百科</a><a class="btn btn-ghost" href="wiki.html">打开新手旅行手册</a><a class="btn btn-quiet" href="index.html#top">返回首页</a></div></div>
+		</section>
+	</main>
 
-    <section id="bells" class="section bells">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">The thirteen bells · world design</p><h2>钟声不是倒计时，是世界规则</h2></div>
-          <p class="lead"><strong>以下为第一赛季的世界观与规则设计，尚未在冒险服实装。</strong>每一次钟响都会改变地图、敌人和撤离条件，点击钟点查看设计中的关键变化。</p>
-        </div>
-        <div class="bell-meter reveal">
-          <div class="bell-line"><div class="bell-line-fill"></div></div>
-          <div class="bell-grid" role="list">
-            <button class="bell key active" data-bell="1"><span class="bell-dot">I</span><small>外环开放</small></button>
-            <button class="bell" data-bell="2"><span class="bell-dot">II</span><small>黑雾蔓延</small></button>
-            <button class="bell" data-bell="3"><span class="bell-dot">III</span><small>搜索加剧</small></button>
-            <button class="bell" data-bell="4"><span class="bell-dot">IV</span><small>亡灵巡逻</small></button>
-            <button class="bell key" data-bell="5"><span class="bell-dot">V</span><small>地下开启</small></button>
-            <button class="bell" data-bell="6"><span class="bell-dot">VI</span><small>路线收束</small></button>
-            <button class="bell key" data-bell="7"><span class="bell-dot">VII</span><small>历史重叠</small></button>
-            <button class="bell" data-bell="8"><span class="bell-dot">VIII</span><small>记忆回声</small></button>
-            <button class="bell" data-bell="9"><span class="bell-dot">IX</span><small>精英猎人</small></button>
-            <button class="bell key" data-bell="10"><span class="bell-dot">X</span><small>遗物共鸣</small></button>
-            <button class="bell" data-bell="11"><span class="bell-dot">XI</span><small>常规撤离关闭</small></button>
-            <button class="bell" data-bell="12"><span class="bell-dot">XII</span><small>首领强化</small></button>
-            <button class="bell key" data-bell="13"><span class="bell-dot">XIII</span><small>未撤离者失败</small></button>
-          </div>
-          <div class="bell-detail" aria-live="polite"><b>第一钟 · 外环开放</b><p>修道院外环搜索区开启。行动队第一次踏入废墟，学习带入、搜索、交战与撤离的基本循环。</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section truth">
-      <div class="section-inner truth-layout">
-        <div class="truth-visual reveal" role="img" aria-label="修道院风格的宏伟教堂"></div>
-        <div class="truth-copy reveal">
-          <p class="eyebrow">The thirty-seventh tomb · story design</p>
-          <h2>三十七座墓，只有三十六个名字</h2>
-          <p>第一王女艾琳娜的名字被从历史中抹去。玩家无法投票改变过去发生过什么，却可以决定将真相公开、封存、研究、出售，或归还给被遗忘的人。</p>
-          <blockquote class="quote">王都没有死于灾难。<br>王都死于一次成功的仪式。</blockquote>
-          <div class="evidence-list">
-            <div class="evidence"><b>阿尔弗雷德的真名</b><span>打破“无名骑士”的护甲。</span></div>
-            <div class="evidence"><b>王宫封锁令</b><span>停止首领战中的守卫增援。</span></div>
-            <div class="evidence"><b>第三十七座墓土</b><span>关闭亡灵复活机制。</span></div>
-            <div class="evidence"><b>伊莱的记忆碎片</b><span>打断纪年钟技能。</span></div>
-            <div class="evidence"><b>第一王女真相封印</b><span>开启交涉结局与特殊撤离。</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section chapters">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">Season one dossier · story design</p><h2>第一赛季：天穹余烬</h2></div>
-          <p class="lead"><strong>剧情设计稿，尚未实装。</strong>一条固定真相，八段逐步深入的调查。每局的证据位置、局部事件、敌人状态与撤离路线会变化，让故事能够被反复游玩，而不是看完一次就结束。</p>
-        </div>
-        <div class="chapter-list reveal">
-          <article class="chapter"><span>序章</span><b>灰烬钟声</b><p>寻找失踪补给，第一次理解“只有撤离，成果才会保存”。</p></article>
-          <article class="chapter"><span>第一章</span><b>破碎密报</b><p>回收十三封命令，发现最后一封只有印章，没有正文。</p></article>
-          <article class="chapter"><span>第二章</span><b>断裂补给线</b><p>三十七名孤儿入院，事后名册却只剩三十六人。</p></article>
-          <article class="chapter"><span>第三章</span><b>封印之下</b><p>第七钟响起时，无名墓短暂出现，剧情证据首次改变战斗风险。</p></article>
-          <article class="chapter"><span>第四章</span><b>觊觎者</b><p>王室、教会、学院与黑市公开介入，契约开始互相冲突。</p></article>
-          <article class="chapter"><span>第五章</span><b>漫长守夜</b><p>钟声真正改变地图，避难所早于灾难存在的秘密浮出水面。</p></article>
-          <article class="chapter"><span>第六章</span><b>没有名字的继承人</b><p>集齐人物、行为、时间、手段与原因，完成第一王女真相认证。</p></article>
-          <article class="chapter"><span>终章</span><b>最后祈祷</b><p>面对“无瑕之王”，用事实削弱它，并把选择成功带出旧王都。</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section gallery">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">The world already lives</p><h2>这不是概念图，是正在生长的艾尔岚</h2></div>
-          <p class="lead">页面中的画面全部来自五周目现役主城与生活区。未来的远征不是另起炉灶，而是让这座已经活起来的世界拥有更遥远的边界。</p>
-        </div>
-        <div class="gallery-grid reveal">
-          <figure class="shot"><img src="img/thirteen-bells-farmland.webp" alt="栖风谷麦田与巨树" loading="lazy"><figcaption>栖风谷 · 远征粮仓</figcaption></figure>
-          <figure class="shot"><img src="img/thirteen-bells-tavern.webp" alt="温暖的酒馆室内" loading="lazy"><figcaption>森罗酒馆 · 补给与研究</figcaption></figure>
-          <figure class="shot"><img src="img/thirteen-bells-market.webp" alt="主城市场摊位" loading="lazy"><figcaption>主城市场 · 玩家经济</figcaption></figure>
-        </div>
-      </div>
-    </section>
-
-    <section id="roadmap" class="section roadmap">
-      <div class="section-inner">
-        <div class="section-head reveal">
-          <div><p class="eyebrow">Build status</p><h2>现在能玩什么，未来会变成什么</h2></div>
-          <p class="lead">我们会保留生活服的自由与长期积累，同时用冒险服为每条产业链建立稳定消耗和高价值目标。以下内容按“已开放”“测试中”和“计划中”明确区分。</p>
-        </div>
-        <div class="roadmap-grid three reveal">
-          <article class="roadmap-col live">
-            <h3>聊天与出入</h3>
-            <p>已开放</p>
-            <ol>
-              <li>冒险服聊天与生存服互通，并同步到 QQ 群</li>
-              <li>从生存服菜单直接进入冒险服</li>
-              <li>冒险服自带的悬赏、保险与赛季榜</li>
-            </ol>
-          </article>
-          <article class="roadmap-col live">
-            <h3>金币与补给</h3>
-            <p>已开放</p>
-            <ol>
-              <li>冒险币与金币兑换：卖出 1 冒险币得 8 金币，买入 1 冒险币付 12 金币，来回兑换必亏，每个账号每天有兑换上限</li>
-              <li>补给仓库：在生存服用 /补给 存入面包与烤肉类菜肴，到冒险服领取，用来恢复生命值</li>
-            </ol>
-          </article>
-          <article class="roadmap-col future">
-            <h3>即将开放</h3>
-            <p>下一步</p>
-            <ol>
-              <li>酒水补给：按酒的品质给予力量、坚韧、迅捷等限时增益</li>
-              <li>军械库：把生存服打造的装备以“投影”形式带去冒险服</li>
-              <li>冒险服独有材料带回生存服，用于更高阶的菜肴</li>
-              <li>赛季称号在生存服显示</li>
-            </ol>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="finale">
-      <div class="finale-inner reveal">
-        <p class="eyebrow">Ellan · Season One</p>
-        <h2>家园负责让你出发。<br>真相决定你如何回来。</h2>
-        <blockquote>“杀出去，只能让你活着。<br>带出真相，才能让你赢。”</blockquote>
-        <p>现在加入艾尔岚，建立农场、酒窖、工坊与商路，也可以直接从菜单进入冒险服试试身手。你准备的不只是装备，而是整个艾尔岚继续运转下去的可能。</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-inner"><span>艾尔岚工作室 · © 2022—2026</span><span><a href="wiki.html">新手旅行手册</a> · <a href="gameplay.html">玩法百科</a> · <a href="plan.html">大陆数据</a> · <a href="legal.html">法律声明</a> · 页面素材均为五周目实机截图</span></div>
-  </footer>
-
-  <script defer src="js/thirteen-bells.js?v=20261118-v1"></script>
+	<footer><div class="container footer-inner"><strong>ELLAN.TOP</strong><span>艾尔岚工作室 · © 2022—2026 · 纯公益 · 长期运营 · 原版生存</span><div class="footer-actions"><a class="btn btn-ghost btn-sm" href="index.html#join">查看服务器状态</a><a class="btn btn-ghost btn-sm" href="legal.html">法律声明</a></div><p class="footer-legal">艾尔岚是玩家自发组织的非官方社区服务器，与 Mojang Studios、Microsoft 及网易公司无任何隶属、授权或赞助关系；「Minecraft」「我的世界」均为其各自权利方的商标；本站画面均为本服务器实机截图。</p></div></footer>
+	<div id="toast-root" aria-live="polite"></div>
 </body>
 </html>
